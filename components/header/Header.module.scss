@@ -1,0 +1,105 @@
+@import './../../styles/globalTheme.scss';
+
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: linear-gradient(90deg, #3478c1, #104d75 100%);
+}
+
+.inner-container {
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: 10px auto 0 auto;
+}
+
+.logo {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.links-container {
+  flex: 1 0px;
+}
+
+.links,
+.links-mobile {
+  margin: 0 40px 0 40px;
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+
+  a {
+    color: $primary-text-color;
+    &:hover {
+      color: $secondary-text-color;
+    }
+  }
+}
+
+.links-mobile {
+  margin: 0;
+  gap: 16px;
+}
+
+.link-mobile {
+  width: 100%;
+}
+
+.drawer-button {
+  margin-left: 12px;
+  height: 32px;
+  padding: 6px;
+  display: none;
+  background: none;
+  border-color: $primary-text-color;
+}
+
+.drawer-button-content {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: $primary-text-color;
+  position: relative;
+}
+
+.drawer-button-content:after,
+.drawer-button-content:before {
+  content: attr(x);
+  width: 20px;
+  position: absolute;
+  top: -6px;
+  left: 0;
+  height: 2px;
+  background: $primary-text-color;
+}
+
+.drawer-button-content:after {
+  top: auto;
+  bottom: -6px;
+}
+
+.drawer-button > span {
+  display: block;
+}
+
+@media #{$sm-md} {
+  .logo {
+    flex: 1;
+  }
+
+  .drawer-button {
+    display: inline-block;
+  }
+
+  .links-container {
+    display: none;
+  }
+}
