@@ -1,10 +1,10 @@
-@import './../../styles/globalTheme.scss';
+@import '../../styles/globalTheme.scss';
 
 .container {
   display: flex;
   align-items: center;
   width: 100%;
-  background: linear-gradient(90deg, #3478c1, #104d75 100%);
+  background: linear-gradient(90deg, #3478c1, $background 100%);
 }
 
 .inner-container {
