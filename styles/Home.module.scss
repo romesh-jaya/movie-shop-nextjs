@@ -1,7 +1,18 @@
+@import './globalTheme.scss';
+
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+.content {
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: 20px auto 0 auto;
+  color: $primary-text-color;
 }

@@ -1,0 +1,17 @@
+.poster {
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 16px;
+  margin-bottom: 0.5rem;
+}
+
+.info-line {
+  display: flex;
+}
+
+.year {
+  flex: 1 0px;
+}
