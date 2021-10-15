@@ -1,3 +1,5 @@
+@import '../../styles/globalTheme.scss';
+
 .poster {
   flex-shrink: 0;
   cursor: pointer;
@@ -14,4 +16,10 @@
 
 .year {
   flex: 1 0px;
+}
+
+.type {
+  border: 1px solid $primary-text-color;
+  border-radius: 3px;
+  padding: 0 5px;
 }

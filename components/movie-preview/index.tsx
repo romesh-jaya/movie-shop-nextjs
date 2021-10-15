@@ -27,7 +27,9 @@ export default function MoviePreview(props: IProps) {
         <p className={styles.title}>{title}</p>
         <p className={styles['info-line']}>
           <div className={styles.year}>{year}</div>
-          <div>{type}</div>
+          <div className={styles.type}>
+            {type === MovieType.Movie ? 'mov' : 'tv'}
+          </div>
         </p>
       </div>
     </div>
