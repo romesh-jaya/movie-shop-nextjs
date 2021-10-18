@@ -6,7 +6,7 @@
 }
 
 .container {
-  width: $thumbnail-width;
+  width: var(--thumbnail-width-px);
   margin: auto;
 }
 
