@@ -23,7 +23,7 @@ export default function MoviePreview(props: IProps) {
     windowWidth <= mobileWidth && windowWidth > 0
       ? thumbnailHeightMobile
       : thumbnailHeightDesktop
-  const thumbnailWidth = cssValue('--thumbnail-width') || 100
+  const thumbnailWidth = cssValue('--thumbnail-width')
 
   return (
     <div className={styles.container}>
