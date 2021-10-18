@@ -29,7 +29,7 @@ export default function MovieSection() {
     for (let i = 0; i < totalSlides; i++) {
       const movie = movieData[i]
       slides.push(
-        <Slide index={i}>
+        <Slide index={i} key={`${movie.type}-${movie.title}`}>
           {' '}
           <MoviePreview
             title={movie.title}
