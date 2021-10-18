@@ -47,7 +47,7 @@ export default function MovieSection() {
 
   // Note: naturalSlideWidth and naturalSlideHeight are ignored when isIntrinsicHeight is set
   return (
-    <div>
+    <div className={styles.container}>
       <CarouselProvider
         naturalSlideWidth={10}
         naturalSlideHeight={10}
@@ -59,8 +59,12 @@ export default function MovieSection() {
         <Slider style={{ width: `${carouselWidth}px` }}>
           {renderSlides()}
         </Slider>
-        <ButtonBack>Back</ButtonBack>
-        <ButtonNext>Next</ButtonNext>
+        <ButtonBack className={styles['btn-arrow']}>
+          <></>
+        </ButtonBack>
+        <ButtonNext className={styles['btn-arrow']}>
+          <></>
+        </ButtonNext>
       </CarouselProvider>
     </div>
   )
