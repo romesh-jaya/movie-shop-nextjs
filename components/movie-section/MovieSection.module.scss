@@ -5,26 +5,26 @@
   position: relative;
 }
 
-.carousel {
-  :global .carousel__next-button {
-    right: calc(0px);
-    &::before {
-      left: 0;
-      transform: rotate(45deg);
-    }
-    @media #{$sm} {
-      right: calc(-25px);
-    }
+.next-button {
+  right: 0px;
+  &::before {
+    left: 0;
+    transform: rotate(45deg);
   }
-  :global .carousel__back-button {
-    left: calc(0px);
-    &::before {
-      right: 0;
-      transform: rotate(-135deg);
-    }
-    @media #{$sm} {
-      left: calc(-25px);
-    }
+  @media #{$sm} {
+    right: -25px;
+  }
+}
+
+.back-button {
+  left: 0px;
+  &::before {
+    left: 0.1em;
+    right: 0;
+    transform: rotate(-135deg);
+  }
+  @media #{$sm} {
+    left: -25px;
   }
 }
 
@@ -57,6 +57,10 @@
     color: $background;
   }
 
+  &:disabled {
+    display: none;
+  }
+
   &::before {
     border-top: 0;
     border-bottom: 0;
@@ -67,9 +71,7 @@
     display: inline-block;
     width: 10px;
     height: 10px;
-    left: 0.1em;
     position: relative;
-    transform: rotate(-45deg);
     vertical-align: top;
     @media #{$sm} {
       border-width: 0.1em 0.1em 0 0;

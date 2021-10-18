@@ -60,10 +60,12 @@ export default function MovieSection() {
         step={visibleSlidesAtATime}
         className={styles.carousel}>
         <Slider>{renderSlides()}</Slider>
-        <ButtonBack className={styles['btn-arrow']}>
+        <ButtonBack
+          className={`${styles['btn-arrow']} ${styles['back-button']}`}>
           <></>
         </ButtonBack>
-        <ButtonNext className={styles['btn-arrow']}>
+        <ButtonNext
+          className={`${styles['btn-arrow']} ${styles['next-button']}`}>
           <></>
         </ButtonNext>
       </CarouselProvider>
