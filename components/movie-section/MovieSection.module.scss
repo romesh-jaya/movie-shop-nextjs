@@ -1,6 +1,7 @@
 @import '../../styles/globalTheme.scss';
 
 .container {
+  width: 100%;
   position: relative;
 }
 
@@ -16,7 +17,7 @@
     }
   }
   :global .carousel__back-button {
-    left: calc(-10px);
+    left: calc(0px);
     &::before {
       right: 0;
       transform: rotate(-135deg);

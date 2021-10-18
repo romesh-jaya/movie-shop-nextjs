@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   CarouselProvider,
   Slider,
@@ -8,9 +8,9 @@ import {
 } from 'pure-react-carousel'
 import 'pure-react-carousel/dist/react-carousel.es.css'
 import styles from './MovieSection.module.scss'
-import { useWindowWidth } from '@react-hook/window-size'
 import { cssValue } from '../../utils/css'
 import dynamic from 'next/dynamic'
+import { useContainerDimensions } from '../../hooks/useContainerDimensions'
 
 const movieData = require('../../constants/movies-sample-data.json')
 
@@ -20,11 +20,15 @@ const totalSlides = 20
 const thumbnailGap = 20
 
 export default function MovieSection() {
-  const windowWidth = useWindowWidth()
-  const carouselWidth =
-    windowWidth < 1200 && windowWidth > 0 ? windowWidth * 0.9 : 1200
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerWidth, setContainerWidth] = useState(0)
   const slideWidth = parseInt(cssValue('--thumbnail-width')) + thumbnailGap
-  const visibleSlidesAtATime = Math.floor(carouselWidth / slideWidth)
+  const visibleSlidesAtATime = Math.floor(containerWidth / slideWidth)
+  const { width } = useContainerDimensions(containerRef)
+
+  useEffect(() => {
+    setContainerWidth(width)
+  }, [width])
 
   const renderSlides = () => {
     const slides = []
@@ -32,7 +36,6 @@ export default function MovieSection() {
       const movie = movieData[i]
       slides.push(
         <Slide index={i} key={`${movie.type}-${movie.title}`}>
-          {' '}
           <MoviePreview
             title={movie.title}
             year={movie.year}
@@ -47,7 +50,7 @@ export default function MovieSection() {
 
   // Note: naturalSlideWidth and naturalSlideHeight are ignored when isIntrinsicHeight is set
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={containerRef}>
       <CarouselProvider
         naturalSlideWidth={10}
         naturalSlideHeight={10}
@@ -56,9 +59,7 @@ export default function MovieSection() {
         visibleSlides={visibleSlidesAtATime}
         step={visibleSlidesAtATime}
         className={styles.carousel}>
-        <Slider style={{ width: `${carouselWidth}px` }}>
-          {renderSlides()}
-        </Slider>
+        <Slider>{renderSlides()}</Slider>
         <ButtonBack className={styles['btn-arrow']}>
           <></>
         </ButtonBack>
