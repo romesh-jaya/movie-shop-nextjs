@@ -4,8 +4,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Roboto;
   background: $background;
 }
 
@@ -20,4 +19,12 @@ a {
 
 p {
   margin: 0;
+}
+
+:root {
+  --thumbnail-width: 194;
+
+  @media #{$sm} {
+    --thumbnail-width: 150;
+  }
 }

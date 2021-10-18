@@ -1,5 +1,4 @@
 import React from 'react'
-import MoviePreview from '../movie-preview'
 import {
   CarouselProvider,
   Slider,
@@ -10,18 +9,21 @@ import {
 import 'pure-react-carousel/dist/react-carousel.es.css'
 import styles from './MovieSection.module.scss'
 import { useWindowWidth } from '@react-hook/window-size'
-import { thumbnailWidth } from '../../constants/appConstants'
+import { cssValue } from '../../utils/css'
+import dynamic from 'next/dynamic'
 
 const movieData = require('../../constants/movies-sample-data.json')
 
+const MoviePreview = dynamic(() => import('../movie-preview'), { ssr: false })
+
 const totalSlides = 20
 const thumbnailGap = 20
-const slideWidth = thumbnailWidth + thumbnailGap
 
 export default function MovieSection() {
   const windowWidth = useWindowWidth()
   const carouselWidth =
     windowWidth < 1200 && windowWidth > 0 ? windowWidth * 0.9 : 1200
+  const slideWidth = parseInt(cssValue('--thumbnail-width')) + thumbnailGap
   const visibleSlidesAtATime = Math.floor(carouselWidth / slideWidth)
 
   const renderSlides = () => {

@@ -1,9 +1,12 @@
 import type { NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import React from 'react'
 import Header from '../components/header'
-import MovieSection from '../components/movie-section'
 import styles from '../styles/Home.module.scss'
+const MovieSection = dynamic(() => import('../components/movie-section'), {
+  ssr: false,
+})
 
 const Home: NextPage = () => {
   return (

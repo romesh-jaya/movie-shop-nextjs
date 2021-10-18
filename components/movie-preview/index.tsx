@@ -1,8 +1,13 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import styles from './MoviePreview.module.scss'
-import Image from 'next/image'
 import { MovieType } from '../../enums/MovieType'
-import { thumbnailWidth } from '../../constants/appConstants'
+import { mobileWidth } from '../../constants/appConstants'
+import { useWindowWidth } from '@react-hook/window-size'
+import { cssValue } from '../../utils/css'
+
+export const thumbnailHeightDesktop = 287
+export const thumbnailHeightMobile = 222
 
 interface IProps {
   title: string
@@ -13,15 +18,21 @@ interface IProps {
 
 export default function MoviePreview(props: IProps) {
   const { title, year, type, mediaURL } = props
+  const windowWidth = useWindowWidth()
+  const thumbnailHeight =
+    windowWidth <= mobileWidth && windowWidth > 0
+      ? thumbnailHeightMobile
+      : thumbnailHeightDesktop
+  const thumbnailWidth = cssValue('--thumbnail-width') || 100
+
   return (
     <div className={styles.container}>
       <div className={styles.poster}>
-        <Image
+        <img
           src={mediaURL}
           alt={title}
           width={`${thumbnailWidth}px`}
-          height='287px'
-          unoptimized
+          height={`${thumbnailHeight}px`}
         />
       </div>
       <div>
