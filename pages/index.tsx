@@ -4,6 +4,10 @@ import Head from 'next/head'
 import React from 'react'
 import Header from '../components/header'
 import styles from '../styles/Home.module.scss'
+const movieData = require('../constants/movies-sample-data.json')
+
+// make this dynamic, so that the images are loaded dynamically and not via SSR,
+// which causes problems
 const MovieSection = dynamic(() => import('../components/movie-section'), {
   ssr: false,
 })
@@ -18,7 +22,7 @@ const Home: NextPage = () => {
       </Head>
       <Header />
       <div className={styles.content}>
-        <MovieSection />
+        <MovieSection sectionTitle='Featured' movies={movieData} />
       </div>
     </div>
   )

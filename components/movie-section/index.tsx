@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, ReactElement } from 'react'
 import {
   CarouselProvider,
   Slider,
@@ -9,17 +9,19 @@ import {
 import 'pure-react-carousel/dist/react-carousel.es.css'
 import styles from './MovieSection.module.scss'
 import { cssValue } from '../../utils/css'
-import dynamic from 'next/dynamic'
 import { useContainerDimensions } from '../../hooks/useContainerDimensions'
+import { MovieInfo } from '../../types/MovieInfo'
+import MoviePreview from '../movie-preview'
 
-const movieData = require('../../constants/movies-sample-data.json')
-
-const MoviePreview = dynamic(() => import('../movie-preview'), { ssr: false })
-
-const totalSlides = 20
 const thumbnailGap = 20
 
-export default function MovieSection() {
+interface IProps {
+  sectionTitle: string
+  movies: MovieInfo[]
+}
+
+export default function MovieSection(props: IProps) {
+  const { sectionTitle, movies } = props
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(0)
   const slideWidth = parseInt(cssValue('--thumbnail-width')) + thumbnailGap
@@ -31,11 +33,10 @@ export default function MovieSection() {
   }, [width])
 
   const renderSlides = () => {
-    const slides = []
-    for (let i = 0; i < totalSlides; i++) {
-      const movie = movieData[i]
+    const slides: ReactElement[] = []
+    movies.forEach((movie, idx) => {
       slides.push(
-        <Slide index={i} key={`${movie.type}-${movie.title}`}>
+        <Slide index={idx} key={`${movie.type}-${movie.title}`}>
           <MoviePreview
             title={movie.title}
             year={movie.year}
@@ -44,21 +45,21 @@ export default function MovieSection() {
           />
         </Slide>
       )
-    }
+    })
     return slides
   }
 
   // Note: naturalSlideWidth and naturalSlideHeight are ignored when isIntrinsicHeight is set
   return (
     <div className={styles.container} ref={containerRef}>
+      <div className={styles.title}>{sectionTitle}</div>
       <CarouselProvider
         naturalSlideWidth={10}
         naturalSlideHeight={10}
-        totalSlides={totalSlides}
+        totalSlides={movies.length}
         isIntrinsicHeight
         visibleSlides={visibleSlidesAtATime}
-        step={visibleSlidesAtATime}
-        className={styles.carousel}>
+        step={visibleSlidesAtATime}>
         <Slider>{renderSlides()}</Slider>
         <ButtonBack
           className={`${styles['btn-arrow']} ${styles['back-button']}`}>
