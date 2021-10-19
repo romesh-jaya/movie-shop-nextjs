@@ -4,6 +4,8 @@ import styles from './MoviePreview.module.scss'
 import { MovieType } from '../../enums/MovieType'
 import { cssValue } from '../../utils/css'
 
+const portraitImage = '/images/portrait-image.jpg'
+
 interface IProps {
   title: string
   year: string
@@ -20,7 +22,7 @@ export default function MoviePreview(props: IProps) {
     <div className={styles.container}>
       <div className={styles.poster}>
         <img
-          src={mediaURL}
+          src={mediaURL ?? portraitImage}
           alt={title}
           width={`${thumbnailWidth}px`}
           height={`${thumbnailHeight}px`}
