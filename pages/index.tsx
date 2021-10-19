@@ -4,6 +4,7 @@ import Head from 'next/head'
 import React from 'react'
 import Header from '../components/header'
 import styles from '../styles/Home.module.scss'
+import { MovieInfo } from '../types/MovieInfo'
 const movieData = require('../constants/movies-sample-data.json')
 
 // make this dynamic, so that the images are loaded dynamically and not via SSR,
@@ -22,7 +23,10 @@ const Home: NextPage = () => {
       </Head>
       <Header />
       <div className={styles.content}>
-        <MovieSection sectionTitle='Featured' movies={movieData} />
+        <MovieSection
+          sectionTitle='Featured'
+          movies={movieData.filter((movie: MovieInfo) => movie.featured)}
+        />
       </div>
     </div>
   )

@@ -10,4 +10,5 @@ export type MovieInfo = {
   mediaURL: string
   plot: string
   actors: string
+  featured?: boolean
 }

@@ -9,7 +9,8 @@
     "type": "movie",
     "pGRating": "PG",
     "languages": "English",
-    "genre": ["Animation", "Adventure", "Comedy"]
+    "genre": ["Animation", "Adventure", "Comedy"],
+    "featured": true
   },
   {
     "title": "Shrek 2",
@@ -21,7 +22,8 @@
     "type": "movie",
     "pGRating": "PG",
     "languages": "English",
-    "genre": ["Animation", "Adventure", "Comedy"]
+    "genre": ["Animation", "Adventure", "Comedy"],
+    "featured": true
   },
   {
     "title": "Shrek the Third",
@@ -33,7 +35,8 @@
     "type": "movie",
     "pGRating": "PG",
     "languages": "English",
-    "genre": ["Animation", "Adventure", "Comedy"]
+    "genre": ["Animation", "Adventure", "Comedy"],
+    "featured": true
   },
   {
     "title": "Shrek Forever After",
@@ -129,7 +132,8 @@
     "type": "movie",
     "pGRating": "PG",
     "languages": "English",
-    "genre": ["Action", "Adventure", "Fantasy"]
+    "genre": ["Action", "Adventure", "Fantasy"],
+    "featured": true
   },
   {
     "title": "Star Wars: Episode V - The Empire Strikes Back",
@@ -141,7 +145,8 @@
     "type": "movie",
     "pGRating": "PG",
     "languages": "English",
-    "genre": ["Action", "Adventure", "Fantasy"]
+    "genre": ["Action", "Adventure", "Fantasy"],
+    "featured": true
   },
   {
     "title": "Star Wars: Episode VI - Return of the Jedi",
@@ -153,7 +158,8 @@
     "type": "movie",
     "pGRating": "PG",
     "languages": "English",
-    "genre": ["Action", "Adventure", "Fantasy"]
+    "genre": ["Action", "Adventure", "Fantasy"],
+    "featured": true
   },
   {
     "title": "Star Wars: Episode VII - The Force Awakens",
@@ -249,7 +255,8 @@
     "type": "movie",
     "pGRating": "PG",
     "languages": "English, French",
-    "genre": ["Animation", "Action", "Adventure"]
+    "genre": ["Animation", "Action", "Adventure"],
+    "featured": true
   },
   {
     "title": "Incredibles 2",
@@ -261,7 +268,8 @@
     "type": "movie",
     "pGRating": "PG",
     "languages": "English",
-    "genre": ["Animation", "Action", "Adventure"]
+    "genre": ["Animation", "Action", "Adventure"],
+    "featured": true
   },
   {
     "title": "The Incredibles",
