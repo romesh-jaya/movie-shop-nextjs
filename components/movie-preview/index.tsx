@@ -2,12 +2,7 @@
 import React from 'react'
 import styles from './MoviePreview.module.scss'
 import { MovieType } from '../../enums/MovieType'
-import { mobileWidth } from '../../constants/appConstants'
-import { useWindowWidth } from '@react-hook/window-size'
 import { cssValue } from '../../utils/css'
-
-export const thumbnailHeightDesktop = 287
-export const thumbnailHeightMobile = 222
 
 interface IProps {
   title: string
@@ -18,12 +13,8 @@ interface IProps {
 
 export default function MoviePreview(props: IProps) {
   const { title, year, type, mediaURL } = props
-  const windowWidth = useWindowWidth()
-  const thumbnailHeight =
-    windowWidth <= mobileWidth && windowWidth > 0
-      ? thumbnailHeightMobile
-      : thumbnailHeightDesktop
   const thumbnailWidth = cssValue('--thumbnail-width')
+  const thumbnailHeight = parseInt(thumbnailWidth) * 1.48 // This is the height to width ratio of the album art
 
   return (
     <div className={styles.container}>
