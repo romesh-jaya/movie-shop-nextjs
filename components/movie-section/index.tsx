@@ -42,6 +42,7 @@ export default function MovieSection(props: IProps) {
             year={movie.year}
             mediaURL={movie.mediaURL}
             type={movie.type}
+            imdbID={movie.imdbID}
           />
         </Slide>
       )
