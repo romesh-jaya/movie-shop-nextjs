@@ -9,7 +9,7 @@ const movieData = require('../../../constants/movies-sample-data.json')
 
 const titleBase = 'Ultra Movie Shop'
 
-const Home: NextPage = () => {
+const TitlePage: NextPage = () => {
   const router = useRouter()
   const { id } = router.query
   const [movie, setMovie] = useState<MovieInfo>()
@@ -50,4 +50,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default TitlePage
