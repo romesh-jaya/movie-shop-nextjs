@@ -41,6 +41,7 @@ module.exports = {
     'react/display-name': 'off',
     'no-var': 'error',
     'react/self-closing-comp': 'error',
+    '@next/next/no-img-element': 'off',
   },
   plugins: ['@typescript-eslint'],
 }

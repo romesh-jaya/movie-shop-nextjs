@@ -1,12 +1,13 @@
-/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import { useRouter } from 'next/router'
 import styles from './MoviePreview.module.scss'
 import { MovieType } from '../../enums/MovieType'
 import { cssValue } from '../../utils/css'
 import prettyUrl from '../../utils/prettyURL'
-
-const portraitImage = '/images/portrait-image.jpg'
+import {
+  heightToWidthAlbumArt,
+  portraitImage,
+} from '../../constants/appConstants'
 
 interface IProps {
   title: string
@@ -20,7 +21,7 @@ export default function MoviePreview(props: IProps) {
   const router = useRouter()
   const { title, year, type, mediaURL, imdbID } = props
   const thumbnailWidth = cssValue('--thumbnail-width')
-  const thumbnailHeight = parseInt(thumbnailWidth) * 1.48 // This is the height to width ratio of the album art
+  const thumbnailHeight = parseInt(thumbnailWidth) * heightToWidthAlbumArt
 
   const onPosterClicked = () => {
     const id = imdbID + '-' + prettyUrl(title)

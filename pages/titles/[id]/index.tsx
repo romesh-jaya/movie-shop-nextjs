@@ -5,6 +5,7 @@ import Header from '../../../components/header'
 import styles from '../../../styles/Title.module.scss'
 import { useRouter } from 'next/router'
 import { MovieInfo } from '../../../types/MovieInfo'
+import MovieDetail from '../../../components/movie-detail'
 const movieData = require('../../../constants/movies-sample-data.json')
 
 const titleBase = 'Ultra Movie Shop'
@@ -45,7 +46,10 @@ const TitlePage: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Header />
-      <div className={styles.content}>{error}</div>
+      <div className={styles.content}>
+        {error}
+        {movie && <MovieDetail movie={movie} />}
+      </div>
     </div>
   )
 }
