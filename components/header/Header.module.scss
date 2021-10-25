@@ -22,6 +22,12 @@
   padding-top: 10px;
 }
 
+.query {
+  @media #{$sm} {
+    display: none;
+  }
+}
+
 .links-container {
   flex: 1 0px;
 }

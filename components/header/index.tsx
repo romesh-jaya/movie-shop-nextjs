@@ -24,7 +24,9 @@ export default function Header() {
             />
           </div>
         </Link>
-        <Query />
+        <span className={styles.query}>
+          <Query />
+        </span>
       </div>
     </div>
   )

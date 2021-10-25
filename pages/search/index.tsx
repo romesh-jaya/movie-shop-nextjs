@@ -4,7 +4,7 @@ import React from 'react'
 import Header from '../../components/header'
 import styles from '../../styles/Pages.module.scss'
 import dynamic from 'next/dynamic'
-// import { MovieInfo } from '../types/MovieInfo'
+import { MovieInfo } from '../../types/MovieInfo'
 import { useRouter } from 'next/router'
 import { titleBase } from '../../constants/appConstants'
 const movieData = require('../../constants/movies-sample-data.json')
@@ -21,6 +21,17 @@ const Home: NextPage = () => {
   const resultForText = keyword ? 'Result for: ' + keyword : ''
   const title = keyword ? titleBase + ' - ' + resultForText : titleBase
 
+  const renderSearchResults = () => {
+    if (!keyword) {
+      return null
+    }
+    const movies = movieData.filter((movie: MovieInfo) => {
+      const regexp = new RegExp(keyword as string, 'i')
+      return regexp.test(movie.title)
+    })
+    return movies ? <SearchResults movies={movies} /> : null
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -31,7 +42,7 @@ const Home: NextPage = () => {
       <Header />
       <div className={`${styles.content} ${styles['column-direction']}`}>
         <div className={styles.title}>{resultForText}</div>
-        <SearchResults movies={movieData} />
+        {renderSearchResults()}
       </div>
     </div>
   )
