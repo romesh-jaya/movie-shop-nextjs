@@ -13,7 +13,7 @@ interface IProps {
   title: string
   year: string
   type: MovieType.Movie | MovieType.TvSeries
-  mediaURL: string
+  mediaURL?: string
   imdbID: string
 }
 

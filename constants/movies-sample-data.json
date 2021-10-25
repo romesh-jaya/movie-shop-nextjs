@@ -476,7 +476,7 @@
     "type": "movie",
     "pGRating": null,
     "languages": "English",
-    "genre": [null]
+    "genre": []
   },
   {
     "title": "Return to Downton Abbey: A Grand Event",
@@ -585,7 +585,7 @@
     "type": "movie",
     "pGRating": "Unrated",
     "languages": "English",
-    "genre": [null]
+    "genre": []
   },
   {
     "title": "Happy Birthday Mr Bean",
