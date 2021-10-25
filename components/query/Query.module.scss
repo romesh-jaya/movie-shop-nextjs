@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 234px;
+  height: 35px;
+  box-shadow: 0 10px 20px rgba(27, 48, 110, 0.05);
+  border-radius: 25px;
+  background-color: #7ba9c7;
+}
+
+.query-input {
+  flex: 1 0px;
+  margin-left: 13px;
+  border: none;
+  height: 32px;
+  outline: none;
+  background-color: #7ba9c7;
+  color: #fff;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+  width: 30px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  span {
+    svg {
+      color: #fff;
+    }
+  }
+}

@@ -3,6 +3,7 @@ import styles from './Header.module.scss'
 import Image from 'next/image'
 import Link from 'next/link'
 import logo from '../../assets/images/logo.png'
+import Query from '../query'
 // import { Drawer, Button } from 'antd'
 
 export default function Header() {
@@ -23,6 +24,7 @@ export default function Header() {
             />
           </div>
         </Link>
+        <Query />
       </div>
     </div>
   )
