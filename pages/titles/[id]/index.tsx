@@ -2,13 +2,12 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import React, { useCallback, useEffect, useState } from 'react'
 import Header from '../../../components/header'
-import styles from '../../../styles/Title.module.scss'
+import styles from '../../../styles/Pages.module.scss'
 import { useRouter } from 'next/router'
 import { MovieInfo } from '../../../types/MovieInfo'
 import MovieDetail from '../../../components/movie-detail'
+import { titleBase } from '../../../constants/appConstants'
 const movieData = require('../../../constants/movies-sample-data.json')
-
-const titleBase = 'Ultra Movie Shop'
 
 const TitlePage: NextPage = () => {
   const router = useRouter()

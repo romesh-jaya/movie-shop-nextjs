@@ -17,6 +17,11 @@
   outline: none;
   background-color: #7ba9c7;
   color: #fff;
+
+  &::placeholder {
+    color: #fff;
+    opacity: 0.8;
+  }
 }
 
 .search-container {

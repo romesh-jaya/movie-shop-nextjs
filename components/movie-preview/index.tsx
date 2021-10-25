@@ -2,12 +2,8 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import styles from './MoviePreview.module.scss'
 import { MovieType } from '../../enums/MovieType'
-import { cssValue } from '../../utils/css'
 import prettyUrl from '../../utils/prettyURL'
-import {
-  heightToWidthAlbumArt,
-  portraitImage,
-} from '../../constants/appConstants'
+import { portraitImage } from '../../constants/appConstants'
 
 interface IProps {
   title: string
@@ -20,8 +16,6 @@ interface IProps {
 export default function MoviePreview(props: IProps) {
   const router = useRouter()
   const { title, year, type, mediaURL, imdbID } = props
-  const thumbnailWidth = cssValue('--thumbnail-width')
-  const thumbnailHeight = parseInt(thumbnailWidth) * heightToWidthAlbumArt
 
   const onPosterClicked = () => {
     const id = imdbID + '-' + prettyUrl(title)
@@ -38,12 +32,7 @@ export default function MoviePreview(props: IProps) {
   return (
     <div className={styles.container} onClick={onPosterClicked}>
       <div className={styles.poster}>
-        <img
-          src={mediaURL ?? portraitImage}
-          alt={title}
-          width={`${thumbnailWidth}px`}
-          height={`${thumbnailHeight}px`}
-        />
+        <img src={mediaURL ?? portraitImage} alt={title} />
       </div>
       <div>
         <p className={styles.title}>{title}</p>

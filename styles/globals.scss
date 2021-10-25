@@ -24,9 +24,11 @@ p {
 :root {
   --thumbnail-width: 194;
   --thumbnail-width-px: 194px;
+  --thumbnail-height-px: 287px;
 
   @media #{$sm} {
     --thumbnail-width: 130;
     --thumbnail-width-px: 130px;
+    --thumbnail-height-px: 192px;
   }
 }

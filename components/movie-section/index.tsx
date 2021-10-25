@@ -36,10 +36,7 @@ export default function MovieSection(props: IProps) {
     const slides: ReactElement[] = []
     movies.forEach((movie, idx) => {
       slides.push(
-        <Slide
-          index={idx}
-          key={`${movie.type}-${movie.title}`}
-          className={styles.slide}>
+        <Slide index={idx} key={movie.imdbID} className={styles.slide}>
           <MoviePreview
             title={movie.title}
             year={movie.year}

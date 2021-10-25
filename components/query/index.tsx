@@ -15,6 +15,7 @@ export default function Query() {
         className={styles['query-input']}
         value={queryInput}
         onChange={onQueryInputChange}
+        placeholder='Enter keywords...'
       />
       <div className={styles['search-container']}>
         <SearchOutlined />

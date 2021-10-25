@@ -8,11 +8,17 @@
     opacity: 0.7;
     outline: white 2px solid;
   }
+
+  img {
+    width: var(--thumbnail-width-px);
+    height: var(--thumbnail-height-px);
+  }
 }
 
 .container {
   width: var(--thumbnail-width-px);
   margin: auto;
+  flex-shrink: 0;
 }
 
 .title {
