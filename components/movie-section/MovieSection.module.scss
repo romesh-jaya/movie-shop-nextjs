@@ -37,7 +37,7 @@
 .btn-arrow {
   top: 47%;
   transform: translate(0%, -50%);
-  color: $white;
+  color: $primary-text-color;
   font-size: 26px;
   bottom: 0;
   margin-top: 0;
@@ -58,7 +58,7 @@
   }
 
   &:hover {
-    background: $white;
+    background: $primary-text-color;
     color: $background;
   }
 

@@ -1,3 +1,5 @@
+@import '../../styles/globalTheme.scss';
+
 .container {
   display: flex;
   align-items: center;
@@ -6,7 +8,7 @@
   height: 35px;
   box-shadow: 0 10px 20px rgba(27, 48, 110, 0.05);
   border-radius: 25px;
-  background-color: #7ba9c7;
+  background-color: $light-blue;
 }
 
 .query-input {
@@ -15,11 +17,11 @@
   border: none;
   height: 32px;
   outline: none;
-  background-color: #7ba9c7;
-  color: #fff;
+  background-color: $light-blue;
+  color: $primary-text-color;
 
   &::placeholder {
-    color: #fff;
+    color: $primary-text-color;
     opacity: 0.8;
   }
 }
@@ -37,7 +39,7 @@
 
   span {
     svg {
-      color: #fff;
+      color: $primary-text-color;
     }
   }
 }

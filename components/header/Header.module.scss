@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  background: linear-gradient(90deg, #3478c1, $background 100%);
+  background: linear-gradient(90deg, $background-start, $background 100%);
 }
 
 .inner-container {
@@ -39,9 +39,7 @@
   display: flex;
   justify-content: left;
   flex-wrap: wrap;
-  font-weight: 600;
   font-size: 16px;
-  line-height: 19px;
 
   li {
     margin: 0 10px;
@@ -56,11 +54,12 @@
 
 .links-mobile {
   margin: 0;
-  gap: 16px;
+  gap: 22px;
 }
 
 .link-mobile {
   width: 100%;
+  color: $primary-text-color;
 }
 
 .drawer-button {
@@ -98,6 +97,18 @@
 
 .drawer-button > span {
   display: block;
+}
+
+.drawer {
+  div {
+    div {
+      background-color: $background-start;
+
+      div {
+        color: $primary-text-color;
+      }
+    }
+  }
 }
 
 @media #{$sm-md} {
