@@ -16,7 +16,6 @@
 }
 
 .logo {
-  flex: 1 0px;
   flex-shrink: 0;
   cursor: pointer;
   padding-top: 10px;
@@ -38,16 +37,19 @@
   list-style-type: none;
   padding: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   flex-wrap: wrap;
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
 
-  a {
-    color: $primary-text-color;
-    &:hover {
-      color: $secondary-text-color;
+  li {
+    margin: 0 10px;
+    a {
+      color: $primary-text-color;
+      &:hover {
+        color: $secondary-text-color;
+      }
     }
   }
 }
