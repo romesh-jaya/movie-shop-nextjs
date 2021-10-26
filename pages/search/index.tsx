@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 import { MovieInfo } from '../../types/MovieInfo'
 import { useRouter } from 'next/router'
 import { titleBase } from '../../constants/appConstants'
+import Query from '../../components/query'
 const movieData = require('../../constants/movies-sample-data.json')
 
 // make this dynamic, so that the images are loaded dynamically and not via SSR,
@@ -29,7 +30,13 @@ const Home: NextPage = () => {
       const regexp = new RegExp(keyword as string, 'i')
       return regexp.test(movie.title)
     })
-    return movies ? <SearchResults movies={movies} /> : null
+    return movies && movies.length > 0 ? (
+      <SearchResults movies={movies} />
+    ) : (
+      <p className={styles['no-results']}>
+        No results found. Try searching for a different keyword
+      </p>
+    )
   }
 
   return (
@@ -41,7 +48,15 @@ const Home: NextPage = () => {
       </Head>
       <Header />
       <div className={`${styles.content} ${styles['column-direction']}`}>
-        <div className={styles.title}>{resultForText}</div>
+        <div className={styles['query-mobile']}>
+          <Query />
+        </div>
+        <div className={styles['title-row']}>
+          <div className={styles.title}>{resultForText}</div>
+          <div className={styles['back-button']} onClick={() => router.back()}>
+            &#60;BACK
+          </div>
+        </div>
         {renderSearchResults()}
       </div>
     </div>

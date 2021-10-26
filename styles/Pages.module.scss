@@ -22,10 +22,39 @@
 }
 
 .title {
+  flex: 1 0px;
   font-size: 28px;
   margin-bottom: 0.8rem;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.title-row {
   width: 100%;
+  display: flex;
+}
+
+.back-button {
+  text-align: right;
+  &:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+}
+
+.no-results {
+  width: 100%;
+}
+
+.query-mobile {
+  margin-bottom: 20px;
+  @media #{$md-lg} {
+    display: none;
+  }
+}
+
+.back-button-row {
+  width: 100%;
+  margin-bottom: 20px;
 }

@@ -45,7 +45,12 @@ const TitlePage: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Header />
-      <div className={styles.content}>
+      <div className={`${styles.content} ${styles['column-direction']}`}>
+        <div className={styles['back-button-row']}>
+          <div className={styles['back-button']} onClick={() => router.back()}>
+            &#60;BACK
+          </div>
+        </div>
         {error}
         {movie && <MovieDetail movie={movie} />}
       </div>

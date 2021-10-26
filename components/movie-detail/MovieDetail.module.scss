@@ -21,9 +21,6 @@
 .title {
   font-size: 28px;
   margin-bottom: 0.8rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
 
   @media #{$sm-md} {
     text-align: center;

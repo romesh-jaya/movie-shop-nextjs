@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import React from 'react'
 import Header from '../components/header'
+import Query from '../components/query'
 import { titleBase } from '../constants/appConstants'
 import styles from '../styles/Pages.module.scss'
 import { MovieInfo } from '../types/MovieInfo'
@@ -23,7 +24,10 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Header />
-      <div className={styles.content}>
+      <div className={`${styles.content} ${styles['column-direction']}`}>
+        <div className={styles['query-mobile']}>
+          <Query />
+        </div>
         <MovieSection
           sectionTitle='Featured'
           movies={movieData.filter((movie: MovieInfo) => movie.featured)}
