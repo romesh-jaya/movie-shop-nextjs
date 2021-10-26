@@ -28,6 +28,11 @@ const Home: NextPage = () => {
         <div className={styles['query-mobile']}>
           <Query />
         </div>
+        <img
+          className={styles.hero}
+          src={'/images/hero-desktop.jpg'}
+          alt={`Ultra movies - your best collection of DVD's`}
+        />
         <MovieSection
           sectionTitle='Featured'
           movies={movieData.filter((movie: MovieInfo) => movie.featured)}

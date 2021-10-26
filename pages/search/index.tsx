@@ -18,9 +18,13 @@ const SearchResults = dynamic(() => import('../../components/search-results'), {
 
 const Home: NextPage = () => {
   const router = useRouter()
-  const { keyword } = router.query
-  const resultForText = keyword ? 'Result for: ' + keyword : ''
-  const title = keyword ? titleBase + ' - ' + resultForText : titleBase
+  const { keyword, type } = router.query
+  const resultForText = keyword
+    ? 'Result for: ' + keyword
+    : type
+    ? 'Filter movies'
+    : ''
+  const title = keyword || type ? titleBase + ' - ' + resultForText : ''
 
   const renderSearchResults = () => {
     if (!keyword) {

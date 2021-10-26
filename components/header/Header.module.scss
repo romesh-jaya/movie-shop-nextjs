@@ -62,6 +62,10 @@
   color: $primary-text-color;
 }
 
+.active-link {
+  color: $secondary-text-color !important;
+}
+
 .drawer-button {
   margin-left: 12px;
   height: 32px;

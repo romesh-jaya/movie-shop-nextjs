@@ -8,6 +8,8 @@ import { MovieType } from '../../enums/MovieType'
 import { useRouter } from 'next/router'
 import { Drawer, Button } from 'antd'
 
+const isRunningOnServer = typeof window === 'undefined'
+
 const menuLinks = [
   { key: 'Movies', link: `/search?type=${MovieType.Movie}` },
   { key: 'TV Series', link: `/search?type=${MovieType.TvSeries}` },
@@ -17,6 +19,13 @@ export default function Header() {
   const router = useRouter()
   const [showDrawer, setShowDrawer] = useState(false)
 
+  const getPathnameWithSearch = () => {
+    if (!isRunningOnServer) {
+      return window?.location.pathname + window?.location.search
+    }
+    return ''
+  }
+
   const renderLinksDesktop = () => {
     return (
       <ul className={styles.links}>
@@ -25,7 +34,11 @@ export default function Header() {
             <li key={link.key}>
               <Link href={link.link}>
                 <a
-                  className={router.pathname == link.link ? 'active-link' : ''}>
+                  className={
+                    getPathnameWithSearch() === link.link
+                      ? styles['active-link']
+                      : ''
+                  }>
                   {link.key}
                 </a>
               </Link>
@@ -52,7 +65,12 @@ export default function Header() {
               key={link.key}
               className={styles['link-mobile']}
               onClick={() => onClickMobileLink(link.link)}>
-              <p className={router.pathname == link.link ? 'active-link' : ''}>
+              <p
+                className={
+                  getPathnameWithSearch() === link.link
+                    ? styles['active-link']
+                    : ''
+                }>
                 {link.key}
               </p>
             </li>
