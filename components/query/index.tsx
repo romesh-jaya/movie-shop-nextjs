@@ -20,10 +20,12 @@ export default function Query() {
   }
 
   const onSearchClicked = () => {
-    router.push({
-      pathname: '/search',
-      query: { keyword: queryInput },
-    })
+    if (queryInput) {
+      router.push({
+        pathname: '/search',
+        query: { keyword: queryInput },
+      })
+    }
   }
 
   return (
