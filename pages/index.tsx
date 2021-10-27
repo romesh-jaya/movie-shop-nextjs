@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import React from 'react'
 import Header from '../components/header'
+import HeroCarousel from '../components/hero-carousel'
 import Query from '../components/query'
 import { titleBase } from '../constants/appConstants'
 import styles from '../styles/Pages.module.scss'
@@ -28,11 +29,7 @@ const Home: NextPage = () => {
         <div className={styles['query-mobile']}>
           <Query />
         </div>
-        <img
-          className={styles.hero}
-          src={'/images/hero-desktop.jpg'}
-          alt={`Ultra movies - your best collection of DVD's`}
-        />
+        <HeroCarousel />
         <MovieSection
           sectionTitle='Featured'
           movies={movieData.filter((movie: MovieInfo) => movie.featured)}

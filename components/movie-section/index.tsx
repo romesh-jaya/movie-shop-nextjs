@@ -6,7 +6,6 @@ import {
   ButtonBack,
   ButtonNext,
 } from 'pure-react-carousel'
-import 'pure-react-carousel/dist/react-carousel.es.css'
 import styles from './MovieSection.module.scss'
 import { cssValue } from '../../utils/css'
 import { useContainerDimensions } from '../../hooks/useContainerDimensions'
