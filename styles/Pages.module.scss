@@ -24,7 +24,6 @@
 .title {
   flex: 1 0px;
   font-size: 28px;
-  margin-bottom: 0.8rem;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -33,6 +32,8 @@
 .title-row {
   width: 100%;
   display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
 }
 
 .back-button {

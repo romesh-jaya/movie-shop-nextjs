@@ -8,6 +8,7 @@ import { MovieInfo } from '../../types/MovieInfo'
 import { useRouter } from 'next/router'
 import { titleBase } from '../../constants/appConstants'
 import Query from '../../components/query'
+import { MovieType } from '../../enums/MovieType'
 const movieData = require('../../constants/movies-sample-data.json')
 
 // make this dynamic, so that the images are loaded dynamically and not via SSR,
@@ -22,24 +23,35 @@ const Home: NextPage = () => {
   const resultForText = keyword
     ? 'Result for: ' + keyword
     : type
-    ? 'Filter movies'
+    ? `Filter ${type === MovieType.Movie ? 'movies' : 'TV series'}`
     : ''
   const title = keyword || type ? titleBase + ' - ' + resultForText : ''
 
   const renderSearchResults = () => {
-    if (!keyword) {
+    if (!keyword && !type) {
       return null
     }
-    const movies = movieData.filter((movie: MovieInfo) => {
-      const regexp = new RegExp(keyword as string, 'i')
-      return regexp.test(movie.title)
-    })
+
+    if (keyword) {
+      const movies = movieData.filter((movie: MovieInfo) => {
+        const regexp = new RegExp(keyword as string, 'i')
+        return regexp.test(movie.title)
+      })
+      return movies && movies.length > 0 ? (
+        <SearchResults movies={movies} />
+      ) : (
+        <p className={styles['no-results']}>
+          No results found. Try searching for a different keyword
+        </p>
+      )
+    }
+
+    // Search by type
+    const movies = movieData.filter((movie: MovieInfo) => movie.type === type)
     return movies && movies.length > 0 ? (
       <SearchResults movies={movies} />
     ) : (
-      <p className={styles['no-results']}>
-        No results found. Try searching for a different keyword
-      </p>
+      <p className={styles['no-results']}>No results found.</p>
     )
   }
 
