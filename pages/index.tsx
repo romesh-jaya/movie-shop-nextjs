@@ -8,8 +8,9 @@ import HeroCarousel from '../components/hero-carousel'
 import Query from '../components/query'
 import { titleBase } from '../constants/appConstants'
 import styles from '../styles/Pages.module.scss'
-import { MovieInfo } from '../types/MovieInfo'
-const movieData = require('../constants/movies-sample-data.json')
+import { useQuery } from '@apollo/client'
+import { getFeaturedTitles } from '../queries'
+import Spinner from '../components/spinner'
 
 // make this dynamic, so that the images are loaded dynamically and not via SSR,
 // which causes problems
@@ -18,6 +19,15 @@ const MovieSection = dynamic(() => import('../components/movie-section'), {
 })
 
 const Home: NextPage = () => {
+  const { loading, error, data } = useQuery(getFeaturedTitles, {
+    context: {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-hasura-admin-secret': 'GreatMovieShop1',
+      },
+    },
+  })
+
   return (
     <div className={styles.container}>
       <Head>
@@ -34,10 +44,11 @@ const Home: NextPage = () => {
           <Query />
         </div>
         <HeroCarousel />
-        <MovieSection
-          sectionTitle='Featured'
-          movies={movieData.filter((movie: MovieInfo) => movie.featured)}
-        />
+        {loading && <Spinner />}
+        {error && <p>Error occured while loading movies</p>}
+        {!loading && !error && data.movie.length > 0 && (
+          <MovieSection sectionTitle='Featured' movies={data.movie} />
+        )}
       </div>
     </div>
   )
