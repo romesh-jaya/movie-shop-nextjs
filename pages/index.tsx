@@ -24,6 +24,7 @@ const Home: NextPage = () => {
       headers: {
         'Content-Type': 'application/json',
         'x-hasura-admin-secret': 'GreatMovieShop1',
+        'x-hasura-role': 'user',
       },
     },
   })
