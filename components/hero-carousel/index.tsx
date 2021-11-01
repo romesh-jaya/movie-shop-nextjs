@@ -3,9 +3,9 @@ import { CarouselProvider, Slider, Slide } from 'pure-react-carousel'
 import styles from './HeroCarousel.module.scss'
 
 const slideImages = [
-  '/images/hero-1.jpg',
-  '/images/hero-2.jpg',
-  '/images/hero-3.jpg',
+  '/images/hero-1.webp',
+  '/images/hero-2.webp',
+  '/images/hero-3.webp',
 ]
 
 export default function HeroCarousel() {
