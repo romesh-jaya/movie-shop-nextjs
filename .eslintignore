@@ -4,6 +4,7 @@ node_modules
 build
 out
 .next
+.netlify
 .git
 .eslintrc.js
 next.config.js
