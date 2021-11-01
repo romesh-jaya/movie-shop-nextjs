@@ -3,6 +3,11 @@ const fetch = require('node-fetch')
 
 // Note: this function acts to hide the HASURA_ADMIN_SECRET from the FE
 
+type Error = {
+  statusCode: number
+  message: string
+}
+
 const handler: Handler = async event => {
   if (!process.env.GRAPHQL_ENDPOINT && !process.env.HASURA_ADMIN_SECRET) {
     return {
@@ -30,10 +35,11 @@ const handler: Handler = async event => {
       body: JSON.stringify(data),
     }
   } catch (err) {
+    const error = err as Error
     return {
-      statusCode: err.statusCode || 500,
+      statusCode: error.statusCode || 500,
       body: JSON.stringify({
-        error: err.message,
+        error: error.message,
       }),
     }
   }

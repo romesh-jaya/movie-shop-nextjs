@@ -4712,10 +4712,11 @@ var handler = async (event) => {
       body: JSON.stringify(data)
     };
   } catch (err) {
+    const error = err;
     return {
-      statusCode: err.statusCode || 500,
+      statusCode: error.statusCode || 500,
       body: JSON.stringify({
-        error: err.message
+        error: error.message
       })
     };
   }
