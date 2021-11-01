@@ -1,20 +1,24 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Header from '../../../components/header'
 import styles from '../../../styles/Pages.module.scss'
 import { useRouter } from 'next/router'
-import { MovieInfo } from '../../../types/MovieInfo'
 import MovieDetail from '../../../components/movie-detail'
 import { titleBase } from '../../../constants/appConstants'
-const movieData = require('../../../constants/movies-sample-data.json')
+import { useLazyQuery } from '@apollo/client'
+import { getTitleDetails } from '../../../queries'
+import Spinner from '../../../components/spinner'
 
 const TitlePage: NextPage = () => {
   const router = useRouter()
   const { id } = router.query
-  const [movie, setMovie] = useState<MovieInfo>()
-  const [error, setError] = useState('')
-  const title = movie?.title ? titleBase + ' - ' + movie?.title : titleBase
+  const [getDetails, { loading, error, data }] = useLazyQuery(getTitleDetails)
+  const movieFetched = data && data.movie.length > 0 && data.movie[0]
+  const title =
+    movieFetched && movieFetched.title
+      ? titleBase + ' - ' + movieFetched.title
+      : titleBase
 
   const extractIMDBID = useCallback(() => {
     if (id) {
@@ -22,16 +26,13 @@ const TitlePage: NextPage = () => {
       const firstDashIndex = idString.indexOf('-')
       const iMDBID = idString.substring(0, firstDashIndex)
 
-      const filteredMovie = movieData.find(
-        (data: MovieInfo) => data.imdbID === iMDBID
-      ) as MovieInfo | undefined
-      if (filteredMovie && filteredMovie.imdbID) {
-        setMovie(filteredMovie)
-        return
-      }
-      setError("Specified Title doesn't exist on the database")
+      getDetails({
+        variables: {
+          imdbID: iMDBID,
+        },
+      })
     }
-  }, [id])
+  }, [getDetails, id])
 
   useEffect(() => {
     extractIMDBID()
@@ -50,8 +51,14 @@ const TitlePage: NextPage = () => {
             &#60;BACK
           </div>
         </div>
-        {error}
-        {movie && <MovieDetail movie={movie} />}
+        {loading && <Spinner />}
+        {error && <p>Error occured while loading title details</p>}
+        {!loading && !error && !movieFetched && (
+          <p>Specified Title doesn&#39;t exist on the database</p>
+        )}
+        {!loading && !error && movieFetched && (
+          <MovieDetail movie={movieFetched} />
+        )}
       </div>
     </div>
   )
