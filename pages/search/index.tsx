@@ -23,6 +23,9 @@ const Home: NextPage = () => {
   const router = useRouter()
   const { keyword, type } = router.query
   const [queryExecuted, setQueryExecuted] = useState(false)
+  // Note: we store the keyword and type in state to avoid race conditions
+  const [queryKeyword, setQueryKeyword] = useState('')
+  const [queryType, setQueryType] = useState('')
   const [
     getTitlesByKeywordExec,
     { loading: loadingKeyword, error: errorKeyword, data: dataForKeyword },
@@ -35,49 +38,64 @@ const Home: NextPage = () => {
     dataForType && dataForType.movie.length > 0
       ? dataForType.movie
       : dataForKeyword && dataForKeyword.movie.length > 0
-      ? dataForKeyword
+      ? dataForKeyword.movie
       : []
-  const resultForText = keyword
-    ? 'Result for: ' + keyword
-    : type
-    ? `Filter ${type === MovieType.Movie ? 'movies' : 'TV series'}`
+  const resultForText = queryKeyword
+    ? 'Result for: ' + queryKeyword
+    : queryType
+    ? `Filter ${queryType === MovieType.Movie ? 'movies' : 'TV series'}`
     : ''
-  const title = keyword || type ? titleBase + ' - ' + resultForText : ''
+  const title =
+    queryKeyword || queryType ? titleBase + ' - ' + resultForText : ''
 
-  const executeQuery = useCallback(() => {
-    if (!keyword && !type) {
-      return
-    }
+  const executeQuery = useCallback(
+    (queryKeywordInt: string, queryTypeInt: string) => {
+      if (!queryKeywordInt && !queryTypeInt) {
+        return
+      }
 
-    if (keyword) {
-      getTitlesByKeywordExec({
-        variables: {
-          titleSearch: `%${keyword}%`,
-        },
-      })
-    }
+      if (queryKeywordInt) {
+        const queryString = queryKeywordInt
+        getTitlesByKeywordExec({
+          variables: {
+            titleSearch: `%${queryString}%`,
+          },
+        })
+      }
 
-    if (type) {
-      getTitlesByTypeExec({
-        variables: {
-          type,
-        },
-      })
-    }
+      if (queryTypeInt) {
+        getTitlesByTypeExec({
+          variables: {
+            type: queryTypeInt,
+          },
+        })
+      }
 
-    setQueryExecuted(true)
-  }, [getTitlesByKeywordExec, getTitlesByTypeExec, keyword, type])
+      setQueryExecuted(true)
+    },
+    [getTitlesByKeywordExec, getTitlesByTypeExec]
+  )
 
   useEffect(() => {
-    executeQuery()
-  }, [executeQuery])
+    executeQuery(queryKeyword, queryType)
+  }, [executeQuery, queryKeyword, queryType])
+
+  useEffect(() => {
+    if (keyword) {
+      setQueryKeyword(keyword as string)
+      setQueryType('')
+    } else if (type) {
+      setQueryKeyword('')
+      setQueryType(type as string)
+    }
+  }, [keyword, type])
 
   const renderSearchResults = () => {
     if (!queryExecuted || loadingKeyword || loadingType) {
       return null
     }
 
-    if (keyword && movies.length === 0) {
+    if (queryKeyword && movies.length === 0) {
       return (
         <p className={styles['no-results']}>
           No results found. Try searching for a different keyword
@@ -85,7 +103,7 @@ const Home: NextPage = () => {
       )
     }
 
-    if (type && movies.length === 0) {
+    if (queryType && movies.length === 0) {
       return <p className={styles['no-results']}>No results found</p>
     }
 

@@ -37,8 +37,8 @@ export const getTitleDetails = gql`
 `
 
 export const getTitlesByKeyword = gql`
-  query getTitleDetails($titleSearch: String!) {
-    movie(where: { title: { _ilike: titleSearch } }) {
+  query getTitlesByKeyword($titleSearch: String!) {
+    movie(where: { title: { _ilike: $titleSearch } }) {
       imdbID
       actors
       featured
@@ -55,7 +55,7 @@ export const getTitlesByKeyword = gql`
 `
 
 export const getTitlesByType = gql`
-  query getTitleDetails($type: String!) {
+  query getTitlesByType($type: String!) {
     movie(where: { type: { _eq: $type } }) {
       imdbID
       actors
