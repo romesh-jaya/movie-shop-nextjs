@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import { titleBase } from '../../constants/appConstants'
 import Query from '../../components/query'
 import { MovieType } from '../../enums/MovieType'
-import { useLazyQuery } from '@apollo/client'
+import { useApolloClient } from '@apollo/client'
 import { getTitlesByKeyword, getTitlesByType } from '../../queries'
 import Spinner from '../../components/spinner'
 
@@ -19,27 +19,21 @@ const SearchResults = dynamic(() => import('../../components/search-results'), {
   ssr: false,
 })
 
+type MovieResponse = {
+  movie: MovieInfo[]
+}
+
+// Note: we couldn't use useLazyQuery due to the behaviour outlined in
+// https://github.com/apollographql/apollo-client/issues/5912. Was forced to use useApolloClient instead
+
 const Home: NextPage = () => {
   const router = useRouter()
   const { keyword, type } = router.query
   const [queryExecuted, setQueryExecuted] = useState(false)
-  // Note: we store the keyword and type in state to avoid race conditions
   const [queryKeyword, setQueryKeyword] = useState('')
   const [queryType, setQueryType] = useState('')
-  const [
-    getTitlesByKeywordExec,
-    { loading: loadingKeyword, error: errorKeyword, data: dataForKeyword },
-  ] = useLazyQuery(getTitlesByKeyword)
-  const [
-    getTitlesByTypeExec,
-    { loading: loadingType, error: errorType, data: dataForType },
-  ] = useLazyQuery(getTitlesByType)
-  const movies: MovieInfo[] =
-    dataForType && dataForType.movie.length > 0
-      ? dataForType.movie
-      : dataForKeyword && dataForKeyword.movie.length > 0
-      ? dataForKeyword.movie
-      : []
+  const client = useApolloClient()
+  const [movies, setMovies] = useState<MovieInfo[]>([])
   const resultForText = queryKeyword
     ? 'Result for: ' + queryKeyword
     : queryType
@@ -47,38 +41,59 @@ const Home: NextPage = () => {
     : ''
   const title =
     queryKeyword || queryType ? titleBase + ' - ' + resultForText : ''
+  const [loading, setLoading] = useState(false)
+  const [loadingError, setLoadingError] = useState(false)
 
   const executeQuery = useCallback(
-    (queryKeywordInt: string, queryTypeInt: string) => {
+    async (queryKeywordInt: string, queryTypeInt: string) => {
       if (!queryKeywordInt && !queryTypeInt) {
         return
       }
 
-      if (queryKeywordInt) {
-        const queryString = queryKeywordInt
-        getTitlesByKeywordExec({
-          variables: {
-            titleSearch: `%${queryString}%`,
-          },
-        })
-      }
+      try {
+        setLoading(true)
+        if (queryKeywordInt) {
+          const response = await client.query<MovieResponse>({
+            query: getTitlesByKeyword,
+            variables: {
+              titleSearch: `%${queryKeywordInt}%`,
+            },
+            fetchPolicy: 'no-cache',
+          })
+          if (response.data && response.data.movie.length > 0) {
+            setMovies(response.data.movie)
+          }
+        }
 
-      if (queryTypeInt) {
-        getTitlesByTypeExec({
-          variables: {
-            type: queryTypeInt,
-          },
-        })
+        if (queryTypeInt) {
+          const response = await client.query<MovieResponse>({
+            query: getTitlesByType,
+            variables: {
+              type: queryTypeInt,
+            },
+            fetchPolicy: 'no-cache',
+          })
+          if (response.data && response.data.movie.length > 0) {
+            setMovies(response.data.movie)
+          }
+        }
+      } catch {
+        setLoadingError(true)
+      } finally {
+        setLoading(false)
       }
 
       setQueryExecuted(true)
     },
-    [getTitlesByKeywordExec, getTitlesByTypeExec]
+    [client]
   )
 
   useEffect(() => {
     executeQuery(queryKeyword, queryType)
-  }, [executeQuery, queryKeyword, queryType])
+    // Note: purposely left out executeQuery from dependancy array.
+    // We don't want to re-execute when executeQuery changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryKeyword, queryType])
 
   useEffect(() => {
     if (keyword) {
@@ -91,7 +106,7 @@ const Home: NextPage = () => {
   }, [keyword, type])
 
   const renderSearchResults = () => {
-    if (!queryExecuted || loadingKeyword || loadingType) {
+    if (!queryExecuted || loading || loadingError) {
       return null
     }
 
@@ -127,10 +142,8 @@ const Home: NextPage = () => {
             &#60;BACK
           </div>
         </div>
-        {(loadingKeyword || loadingType) && <Spinner />}
-        {(errorKeyword || errorType) && (
-          <p>Error occured while fetching titles</p>
-        )}
+        {loading && <Spinner />}
+        {loadingError && <p>Error occured while fetching titles</p>}
         {renderSearchResults()}
       </div>
     </div>
