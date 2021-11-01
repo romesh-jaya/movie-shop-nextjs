@@ -8,7 +8,7 @@ import MovieDetail from '../../../components/movie-detail'
 import { titleBase } from '../../../constants/appConstants'
 import { useLazyQuery } from '@apollo/client'
 import { getTitleDetails } from '../../../queries'
-import Spinner from '../../../components/spinner'
+import SpinnerFixedHeight from '../../../components/spinner-fixed-height'
 
 const TitlePage: NextPage = () => {
   const router = useRouter()
@@ -53,7 +53,7 @@ const TitlePage: NextPage = () => {
             &#60;BACK
           </div>
         </div>
-        {loading && <Spinner />}
+        {loading && <SpinnerFixedHeight />}
         {error && <p>Error occured while loading title details</p>}
         {!loading && !error && !movieFetched && queryExecuted && (
           <p>Specified Title doesn&#39;t exist on the database</p>

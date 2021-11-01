@@ -11,7 +11,7 @@ import Query from '../../components/query'
 import { MovieType } from '../../enums/MovieType'
 import { useApolloClient } from '@apollo/client'
 import { getTitlesByKeyword, getTitlesByType } from '../../queries'
-import Spinner from '../../components/spinner'
+import SpinnerFixedHeight from '../../components/spinner-fixed-height'
 
 // make this dynamic, so that the images are loaded dynamically and not via SSR,
 // which causes problems
@@ -30,17 +30,14 @@ const Home: NextPage = () => {
   const router = useRouter()
   const { keyword, type } = router.query
   const [queryExecuted, setQueryExecuted] = useState(false)
-  const [queryKeyword, setQueryKeyword] = useState('')
-  const [queryType, setQueryType] = useState('')
   const client = useApolloClient()
   const [movies, setMovies] = useState<MovieInfo[]>([])
-  const resultForText = queryKeyword
-    ? 'Result for: ' + queryKeyword
-    : queryType
-    ? `Filter ${queryType === MovieType.Movie ? 'movies' : 'TV series'}`
+  const resultForText = keyword
+    ? 'Result for: ' + keyword
+    : type
+    ? `Filter ${type === MovieType.Movie ? 'movies' : 'TV series'}`
     : ''
-  const title =
-    queryKeyword || queryType ? titleBase + ' - ' + resultForText : ''
+  const title = keyword || type ? titleBase + ' - ' + resultForText : ''
   const [loading, setLoading] = useState(false)
   const [loadingError, setLoadingError] = useState(false)
 
@@ -89,20 +86,10 @@ const Home: NextPage = () => {
   )
 
   useEffect(() => {
-    executeQuery(queryKeyword, queryType)
+    executeQuery(keyword as string, type as string)
     // Note: purposely left out executeQuery from dependancy array.
     // We don't want to re-execute when executeQuery changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryKeyword, queryType])
-
-  useEffect(() => {
-    if (keyword) {
-      setQueryKeyword(keyword as string)
-      setQueryType('')
-    } else if (type) {
-      setQueryKeyword('')
-      setQueryType(type as string)
-    }
   }, [keyword, type])
 
   const renderSearchResults = () => {
@@ -110,7 +97,7 @@ const Home: NextPage = () => {
       return null
     }
 
-    if (queryKeyword && movies.length === 0) {
+    if (keyword && movies.length === 0) {
       return (
         <p className={styles['no-results']}>
           No results found. Try searching for a different keyword
@@ -118,7 +105,7 @@ const Home: NextPage = () => {
       )
     }
 
-    if (queryType && movies.length === 0) {
+    if (type && movies.length === 0) {
       return <p className={styles['no-results']}>No results found</p>
     }
 
@@ -142,7 +129,7 @@ const Home: NextPage = () => {
             &#60;BACK
           </div>
         </div>
-        {loading && <Spinner />}
+        {loading && <SpinnerFixedHeight />}
         {loadingError && <p>Error occured while fetching titles</p>}
         {renderSearchResults()}
       </div>

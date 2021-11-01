@@ -10,7 +10,7 @@ import { titleBase } from '../constants/appConstants'
 import styles from '../styles/Pages.module.scss'
 import { useQuery } from '@apollo/client'
 import { getFeaturedTitles } from '../queries'
-import Spinner from '../components/spinner'
+import SpinnerFixedHeight from '../components/spinner-fixed-height'
 
 // make this dynamic, so that the images are loaded dynamically and not via SSR,
 // which causes problems
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
           <Query />
         </div>
         <HeroCarousel />
-        {loading && <Spinner />}
+        {loading && <SpinnerFixedHeight />}
         {error && <p>Error occured while loading movies</p>}
         {!loading && !error && data.movie.length > 0 && (
           <MovieSection sectionTitle='Featured' movies={data.movie} />
