@@ -18,6 +18,7 @@ const handler: Handler = async event => {
   if (!process.env.GRAPHQL_ENDPOINT && !process.env.HASURA_ADMIN_SECRET) {
     return {
       statusCode: 500,
+      headers,
       body: JSON.stringify({
         error:
           'GRAPHQL_ENDPOINT and HASURA_ADMIN_SECRET must be defined in env variables',
@@ -47,12 +48,14 @@ const handler: Handler = async event => {
     const data = await response.json()
     return {
       statusCode: response.status,
+      headers,
       body: JSON.stringify(data),
     }
   } catch (err) {
     const error = err as Error
     return {
       statusCode: error.statusCode || 500,
+      headers,
       body: JSON.stringify({
         error: error.message,
       }),
