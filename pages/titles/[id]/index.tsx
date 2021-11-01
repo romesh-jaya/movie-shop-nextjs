@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Header from '../../../components/header'
 import styles from '../../../styles/Pages.module.scss'
 import { useRouter } from 'next/router'
@@ -13,6 +13,7 @@ import Spinner from '../../../components/spinner'
 const TitlePage: NextPage = () => {
   const router = useRouter()
   const { id } = router.query
+  const [queryExecuted, setQueryExecuted] = useState(false)
   const [getDetails, { loading, error, data }] = useLazyQuery(getTitleDetails)
   const movieFetched = data && data.movie.length > 0 && data.movie[0]
   const title =
@@ -31,6 +32,7 @@ const TitlePage: NextPage = () => {
           imdbID: iMDBID,
         },
       })
+      setQueryExecuted(true)
     }
   }, [getDetails, id])
 
@@ -53,7 +55,7 @@ const TitlePage: NextPage = () => {
         </div>
         {loading && <Spinner />}
         {error && <p>Error occured while loading title details</p>}
-        {!loading && !error && !movieFetched && (
+        {!loading && !error && !movieFetched && queryExecuted && (
           <p>Specified Title doesn&#39;t exist on the database</p>
         )}
         {!loading && !error && movieFetched && (

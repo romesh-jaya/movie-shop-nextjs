@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Header from '../../components/header'
 import styles from '../../styles/Pages.module.scss'
 import dynamic from 'next/dynamic'
@@ -9,7 +9,9 @@ import { useRouter } from 'next/router'
 import { titleBase } from '../../constants/appConstants'
 import Query from '../../components/query'
 import { MovieType } from '../../enums/MovieType'
-const movieData = require('../../constants/movies-sample-data.json')
+import { useLazyQuery } from '@apollo/client'
+import { getTitlesByKeyword, getTitlesByType } from '../../queries'
+import Spinner from '../../components/spinner'
 
 // make this dynamic, so that the images are loaded dynamically and not via SSR,
 // which causes problems
@@ -20,6 +22,21 @@ const SearchResults = dynamic(() => import('../../components/search-results'), {
 const Home: NextPage = () => {
   const router = useRouter()
   const { keyword, type } = router.query
+  const [queryExecuted, setQueryExecuted] = useState(false)
+  const [
+    getTitlesByKeywordExec,
+    { loading: loadingKeyword, error: errorKeyword, data: dataForKeyword },
+  ] = useLazyQuery(getTitlesByKeyword)
+  const [
+    getTitlesByTypeExec,
+    { loading: loadingType, error: errorType, data: dataForType },
+  ] = useLazyQuery(getTitlesByType)
+  const movies: MovieInfo[] =
+    dataForType && dataForType.movie.length > 0
+      ? dataForType.movie
+      : dataForKeyword && dataForKeyword.movie.length > 0
+      ? dataForKeyword
+      : []
   const resultForText = keyword
     ? 'Result for: ' + keyword
     : type
@@ -27,32 +44,52 @@ const Home: NextPage = () => {
     : ''
   const title = keyword || type ? titleBase + ' - ' + resultForText : ''
 
-  const renderSearchResults = () => {
+  const executeQuery = useCallback(() => {
     if (!keyword && !type) {
-      return null
+      return
     }
 
     if (keyword) {
-      const movies = movieData.filter((movie: MovieInfo) => {
-        const regexp = new RegExp(keyword as string, 'i')
-        return regexp.test(movie.title)
+      getTitlesByKeywordExec({
+        variables: {
+          titleSearch: `%${keyword}%`,
+        },
       })
-      return movies && movies.length > 0 ? (
-        <SearchResults movies={movies} />
-      ) : (
+    }
+
+    if (type) {
+      getTitlesByTypeExec({
+        variables: {
+          type,
+        },
+      })
+    }
+
+    setQueryExecuted(true)
+  }, [getTitlesByKeywordExec, getTitlesByTypeExec, keyword, type])
+
+  useEffect(() => {
+    executeQuery()
+  }, [executeQuery])
+
+  const renderSearchResults = () => {
+    if (!queryExecuted || loadingKeyword || loadingType) {
+      return null
+    }
+
+    if (keyword && movies.length === 0) {
+      return (
         <p className={styles['no-results']}>
           No results found. Try searching for a different keyword
         </p>
       )
     }
 
-    // Search by type
-    const movies = movieData.filter((movie: MovieInfo) => movie.type === type)
-    return movies && movies.length > 0 ? (
-      <SearchResults movies={movies} />
-    ) : (
-      <p className={styles['no-results']}>No results found.</p>
-    )
+    if (type && movies.length === 0) {
+      return <p className={styles['no-results']}>No results found</p>
+    }
+
+    return <SearchResults movies={movies} />
   }
 
   return (
@@ -72,6 +109,10 @@ const Home: NextPage = () => {
             &#60;BACK
           </div>
         </div>
+        {(loadingKeyword || loadingType) && <Spinner />}
+        {(errorKeyword || errorType) && (
+          <p>Error occured while fetching titles</p>
+        )}
         {renderSearchResults()}
       </div>
     </div>
