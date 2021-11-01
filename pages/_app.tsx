@@ -6,7 +6,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const client = new ApolloClient({
-    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+    uri: process.env.NEXT_PUBLIC_BE_URL,
     cache: new InMemoryCache(),
   })
 

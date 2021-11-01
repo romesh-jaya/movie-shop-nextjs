@@ -19,15 +19,7 @@ const MovieSection = dynamic(() => import('../components/movie-section'), {
 })
 
 const Home: NextPage = () => {
-  const { loading, error, data } = useQuery(getFeaturedTitles, {
-    context: {
-      headers: {
-        'Content-Type': 'application/json',
-        'x-hasura-admin-secret': 'GreatMovieShop1',
-        'x-hasura-role': 'user',
-      },
-    },
-  })
+  const { loading, error, data } = useQuery(getFeaturedTitles)
 
   return (
     <div className={styles.container}>

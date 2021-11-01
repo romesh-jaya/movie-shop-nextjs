@@ -10,11 +10,13 @@
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
     "analyze": "cross-env ANALYZE=true next build",
     "prepare": "husky install",
-    "check-ts": "tsc --project tsconfig.json --noEmit"
+    "check-ts": "tsc --project tsconfig.json --noEmit",
+    "netlify": "netlify dev"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@apollo/client": "^3.4.16",
+    "@netlify/functions": "^0.8.0",
     "@react-hook/window-size": "^3.0.7",
     "antd": "^4.16.13",
     "graphql": "^16.0.0",
