@@ -1,10 +1,10 @@
 import React from 'react'
-import { MovieInfo } from '../../types/MovieInfo'
+import { MovieInfoBasic } from '../../types/MovieInfoBasic'
 import MoviePreview from '../movie-preview'
 import styles from './SearchResults.module.scss'
 
 interface IProps {
-  movies: MovieInfo[]
+  movies: MovieInfoBasic[]
 }
 
 export default function SearchResults(props: IProps) {

@@ -9,14 +9,14 @@ import {
 import styles from './MovieSection.module.scss'
 import { cssValue } from '../../utils/css'
 import { useContainerDimensions } from '../../hooks/useContainerDimensions'
-import { MovieInfo } from '../../types/MovieInfo'
+import { MovieInfoAdvanced } from '../../types/MovieInfoAdvanced'
 import MoviePreview from '../movie-preview'
 
 const thumbnailGap = 20
 
 interface IProps {
   sectionTitle: string
-  movies: MovieInfo[]
+  movies: MovieInfoAdvanced[]
 }
 
 export default function MovieSection(props: IProps) {

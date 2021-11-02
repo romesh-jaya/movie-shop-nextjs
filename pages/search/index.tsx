@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Header from '../../components/header'
 import styles from '../../styles/Pages.module.scss'
 import dynamic from 'next/dynamic'
-import { MovieInfo } from '../../types/MovieInfo'
+import { MovieInfoBasic } from '../../types/MovieInfoBasic'
 import { useRouter } from 'next/router'
 import { titleBase } from '../../constants/appConstants'
 import Query from '../../components/query'
@@ -20,7 +20,7 @@ const SearchResults = dynamic(() => import('../../components/search-results'), {
 })
 
 type MovieResponse = {
-  movie: MovieInfo[]
+  movie: MovieInfoBasic[]
 }
 
 // Note: we couldn't use useLazyQuery due to the behaviour outlined in
@@ -31,7 +31,7 @@ const Home: NextPage = () => {
   const { keyword, type } = router.query
   const [queryExecuted, setQueryExecuted] = useState(false)
   const client = useApolloClient()
-  const [movies, setMovies] = useState<MovieInfo[]>([])
+  const [movies, setMovies] = useState<MovieInfoBasic[]>([])
   const resultForText = keyword
     ? 'Result for: ' + keyword
     : type

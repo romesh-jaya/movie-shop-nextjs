@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactStars from 'react-rating-stars-component'
-import { MovieInfo } from '../../types/MovieInfo'
+import { MovieInfoAdvanced } from '../../types/MovieInfoAdvanced'
 import styles from './MovieDetail.module.scss'
 import {
   heightToWidthAlbumArt,
@@ -9,7 +9,7 @@ import {
 import { MovieType } from '../../enums/MovieType'
 
 interface IProps {
-  movie: MovieInfo
+  movie: MovieInfoAdvanced
 }
 
 const posterWidth = 300
