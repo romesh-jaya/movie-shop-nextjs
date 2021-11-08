@@ -9,10 +9,11 @@ interface IProps {
   listOfValues: NameValue[]
   chosenValues: NameValue[]
   setValue?: (arrayValues: NameValue[]) => void
+  noOfGridColumns: 1 | 2 | 3
 }
 
 export default function Filter(props: IProps) {
-  const { title, chosenValues, listOfValues, setValue } = props
+  const { title, chosenValues, listOfValues, setValue, noOfGridColumns } = props
   const [popoverOpen, setPopoverOpen] = useState(false)
 
   const onCheckboxChange = (
@@ -36,7 +37,9 @@ export default function Filter(props: IProps) {
   }
 
   const contentPopover = (
-    <div>
+    <div
+      className={styles['popover-content']}
+      style={{ gridTemplateColumns: `repeat(${noOfGridColumns}, 1fr)` }}>
       {listOfValues.map(item => {
         return (
           <div key={item.name}>
@@ -70,7 +73,7 @@ export default function Filter(props: IProps) {
 
   return (
     <Popover
-      overlayClassName={styles['popover-content']}
+      overlayClassName={styles['popover-content-container']}
       content={contentPopover}
       trigger='click'
       visible={popoverOpen}

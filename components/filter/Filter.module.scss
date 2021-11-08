@@ -7,13 +7,21 @@
   background-color: $background-start;
   border-radius: 3px;
   cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
-.popover-content {
+.popover-content-container {
   :global .ant-popover-inner-content {
     background-color: $background-start;
     color: $primary-text-color;
   }
+}
+
+.popover-content {
+  display: grid;
+  gap: 16px;
 }
 
 .checkbox {

@@ -36,11 +36,7 @@ const Home: NextPage = () => {
   const [queryExecuted, setQueryExecuted] = useState(false)
   const client = useApolloClient()
   const [movies, setMovies] = useState<MovieInfoBasic[]>([])
-  const resultForText = keyword
-    ? 'Result for: ' + keyword
-    : type
-    ? `Filter titles`
-    : ''
+  const resultForText = keyword ? 'Result for: ' + keyword : `Filter titles`
   const title = keyword || type ? titleBase + ' - ' + resultForText : ''
   const [loading, setLoading] = useState(false)
   const [loadingError, setLoadingError] = useState(false)

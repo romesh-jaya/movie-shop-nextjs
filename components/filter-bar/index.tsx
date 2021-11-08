@@ -5,6 +5,7 @@ import { NameValue } from '../../types/NameValue'
 import Filter from '../filter'
 import styles from './FilterBar.module.scss'
 import { useRouter } from 'next/router'
+import { Genres } from '../../constants/genres'
 
 const titleTypes: NameValue[] = [
   { name: MovieType.Movie, value: 'Movie' },
@@ -35,9 +36,14 @@ export default function FilterBar(props: IProps) {
   const [valueType, setValueType] = useState<NameValue[]>(
     titleType ? initValueType(titleType) : []
   )
+  const [valueGenre, setValueGenre] = useState<NameValue[]>([])
 
   const setValueTypeInternal = (arrayValues: NameValue[]) => {
     setValueType(arrayValues)
+  }
+
+  const setValueGenreInternal = (arrayValues: NameValue[]) => {
+    setValueGenre(arrayValues)
   }
 
   const onApplyFilterClicked = () => {
@@ -58,11 +64,19 @@ export default function FilterBar(props: IProps) {
         listOfValues={titleTypes}
         chosenValues={valueType}
         setValue={setValueTypeInternal}
+        noOfGridColumns={1}
+      />
+      <Filter
+        title='Genre'
+        listOfValues={Genres}
+        chosenValues={valueGenre}
+        setValue={setValueGenreInternal}
+        noOfGridColumns={3}
       />
       <Button
         className={styles['apply-filters-button']}
         onClick={onApplyFilterClicked}>
-        Apply Filter
+        Apply Filters
       </Button>
     </div>
   )
