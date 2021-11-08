@@ -1,0 +1,21 @@
+@import '../../styles/globalTheme.scss';
+
+.container {
+  padding: 5px;
+  width: 150px;
+  text-align: center;
+  background-color: $background-start;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.popover-content {
+  :global .ant-popover-inner-content {
+    background-color: $background-start;
+    color: $primary-text-color;
+  }
+}
+
+.checkbox {
+  color: $primary-text-color;
+}

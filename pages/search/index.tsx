@@ -12,6 +12,7 @@ import { MovieType } from '../../enums/MovieType'
 import { useApolloClient } from '@apollo/client'
 import { getTitlesByKeyword, getTitlesByType } from '../../queries'
 import SpinnerFixedHeight from '../../components/spinner-fixed-height'
+import FilterBar from '../../components/filter-bar'
 
 // make this dynamic, so that the images are loaded dynamically and not via SSR,
 // which causes problems
@@ -109,7 +110,12 @@ const Home: NextPage = () => {
       return <p className={styles['no-results']}>No results found</p>
     }
 
-    return <SearchResults movies={movies} />
+    return (
+      <>
+        <FilterBar />
+        <SearchResults movies={movies} />
+      </>
+    )
   }
 
   return (
