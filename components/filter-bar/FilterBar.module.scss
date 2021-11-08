@@ -1,4 +1,17 @@
 .container {
   width: 100%;
   margin-bottom: 1.6rem;
+  display: flex;
+  gap: 16px;
+}
+
+.apply-filters-button {
+  border: 1px solid lightgreen;
+  background: limegreen;
+  color: white;
+  border-radius: 3px;
+
+  &:hover {
+    color: limegreen;
+  }
 }

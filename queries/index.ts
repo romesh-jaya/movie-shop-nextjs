@@ -1,5 +1,17 @@
 import { gql } from '@apollo/client'
 
+export const getAllTitles = gql`
+  query getAllTitles {
+    movie {
+      imdbID
+      mediaURL
+      title
+      type
+      year
+    }
+  }
+`
+
 export const getFeaturedTitles = gql`
   query getFeaturedTitles {
     movie(where: { featured: { _eq: true } }) {

@@ -1,13 +1,19 @@
+import { Button } from 'antd'
 import React, { useState } from 'react'
 import { MovieType } from '../../enums/MovieType'
 import { NameValue } from '../../types/NameValue'
 import Filter from '../filter'
 import styles from './FilterBar.module.scss'
+import { useRouter } from 'next/router'
 
 const titleTypes: NameValue[] = [
   { name: MovieType.Movie, value: 'Movie' },
   { name: MovieType.TvSeries, value: 'TV Series' },
 ]
+
+type QueryObject = {
+  type?: string
+}
 
 interface IProps {
   titleType?: string
@@ -24,6 +30,7 @@ const initValueType = (titleType: string): NameValue[] => {
 }
 
 export default function FilterBar(props: IProps) {
+  const router = useRouter()
   const { titleType } = props
   const [valueType, setValueType] = useState<NameValue[]>(
     titleType ? initValueType(titleType) : []
@@ -31,6 +38,17 @@ export default function FilterBar(props: IProps) {
 
   const setValueTypeInternal = (arrayValues: NameValue[]) => {
     setValueType(arrayValues)
+  }
+
+  const onApplyFilterClicked = () => {
+    const query: QueryObject = {}
+    if (valueType.length === 1) {
+      query.type = valueType[0].name
+    }
+    router.push({
+      pathname: '/search',
+      query,
+    })
   }
 
   return (
@@ -41,6 +59,11 @@ export default function FilterBar(props: IProps) {
         chosenValues={valueType}
         setValue={setValueTypeInternal}
       />
+      <Button
+        className={styles['apply-filters-button']}
+        onClick={onApplyFilterClicked}>
+        Apply Filter
+      </Button>
     </div>
   )
 }

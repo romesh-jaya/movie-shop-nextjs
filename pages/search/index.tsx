@@ -9,7 +9,11 @@ import { useRouter } from 'next/router'
 import { titleBase } from '../../constants/appConstants'
 import Query from '../../components/query'
 import { useApolloClient } from '@apollo/client'
-import { getTitlesByKeyword, getTitlesByType } from '../../queries'
+import {
+  getAllTitles,
+  getTitlesByKeyword,
+  getTitlesByType,
+} from '../../queries'
 import SpinnerFixedHeight from '../../components/spinner-fixed-height'
 import FilterBar from '../../components/filter-bar'
 
@@ -43,13 +47,9 @@ const Home: NextPage = () => {
 
   const executeQuery = useCallback(
     async (queryKeywordInt: string, queryTypeInt: string) => {
-      if (!queryKeywordInt && !queryTypeInt) {
-        return
-      }
-
       try {
         setLoading(true)
-        if (queryKeywordInt) {
+        if (queryKeywordInt && !queryTypeInt) {
           const response = await client.query<MovieResponse>({
             query: getTitlesByKeyword,
             variables: {
@@ -62,12 +62,22 @@ const Home: NextPage = () => {
           }
         }
 
-        if (queryTypeInt) {
+        if (queryTypeInt && !queryKeywordInt) {
           const response = await client.query<MovieResponse>({
             query: getTitlesByType,
             variables: {
               type: queryTypeInt,
             },
+            fetchPolicy: 'no-cache',
+          })
+          if (response.data && response.data.movie.length > 0) {
+            setMovies(response.data.movie)
+          }
+        }
+
+        if (!queryKeywordInt && !queryTypeInt) {
+          const response = await client.query<MovieResponse>({
+            query: getAllTitles,
             fetchPolicy: 'no-cache',
           })
           if (response.data && response.data.movie.length > 0) {

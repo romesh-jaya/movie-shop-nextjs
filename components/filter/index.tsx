@@ -8,7 +8,7 @@ interface IProps {
   title: string
   listOfValues: NameValue[]
   chosenValues: NameValue[]
-  setValue: (arrayValues: NameValue[]) => void
+  setValue?: (arrayValues: NameValue[]) => void
 }
 
 export default function Filter(props: IProps) {
