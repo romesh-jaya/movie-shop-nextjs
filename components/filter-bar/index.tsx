@@ -74,6 +74,11 @@ export default function FilterBar(props: IProps) {
     })
   }
 
+  const onClearFilterClicked = () => {
+    setValueType([])
+    setValueGenre([])
+  }
+
   return (
     <div className={styles.container}>
       <Filter
@@ -90,6 +95,11 @@ export default function FilterBar(props: IProps) {
         setValue={setValueGenreInternal}
         noOfGridColumns={3}
       />
+      <Button
+        className={styles['clear-filters-button']}
+        onClick={onClearFilterClicked}>
+        Clear Filters
+      </Button>
       <Button
         className={styles['apply-filters-button']}
         onClick={onApplyFilterClicked}>

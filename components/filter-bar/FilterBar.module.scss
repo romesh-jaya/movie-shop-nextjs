@@ -22,3 +22,14 @@
     color: limegreen;
   }
 }
+
+.clear-filters-button {
+  border: 1px solid lightsalmon;
+  background: red;
+  color: white;
+  border-radius: 3px;
+
+  &:hover {
+    color: red;
+  }
+}
