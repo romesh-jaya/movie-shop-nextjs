@@ -14,6 +14,7 @@ const titleTypes: NameValue[] = [
 
 type QueryObject = {
   type?: string
+  genre?: string[]
 }
 
 interface IProps {
@@ -50,6 +51,9 @@ export default function FilterBar(props: IProps) {
     const query: QueryObject = {}
     if (valueType.length === 1) {
       query.type = valueType[0].name
+    }
+    if (valueGenre.length >= 1) {
+      query.genre = valueGenre.map(genre => genre.name)
     }
     router.push({
       pathname: '/search',

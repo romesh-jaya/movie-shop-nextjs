@@ -8,11 +8,13 @@ import { MovieInfoBasic } from '../../types/MovieInfoBasic'
 import { useRouter } from 'next/router'
 import { titleBase } from '../../constants/appConstants'
 import Query from '../../components/query'
-import { useApolloClient } from '@apollo/client'
+import { ApolloQueryResult, useApolloClient } from '@apollo/client'
 import {
   getAllTitles,
+  getTitlesByGenre,
   getTitlesByKeyword,
   getTitlesByType,
+  getTitlesByTypeAndGenre,
 } from '../../queries'
 import SpinnerFixedHeight from '../../components/spinner-fixed-height'
 import FilterBar from '../../components/filter-bar'
@@ -32,7 +34,7 @@ type MovieResponse = {
 
 const Home: NextPage = () => {
   const router = useRouter()
-  const { keyword, type } = router.query
+  const { keyword, type, genre } = router.query
   const [queryExecuted, setQueryExecuted] = useState(false)
   const client = useApolloClient()
   const [movies, setMovies] = useState<MovieInfoBasic[]>([])
@@ -41,12 +43,19 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [loadingError, setLoadingError] = useState(false)
 
+  console.log('genre', genre)
+
   const executeQuery = useCallback(
-    async (queryKeywordInt: string, queryTypeInt: string) => {
+    async (
+      queryKeywordInt: string,
+      queryTypeInt: string,
+      queryGenre?: string[]
+    ) => {
+      let response: ApolloQueryResult<MovieResponse>
       try {
         setLoading(true)
         if (queryKeywordInt && !queryTypeInt) {
-          const response = await client.query<MovieResponse>({
+          response = await client.query<MovieResponse>({
             query: getTitlesByKeyword,
             variables: {
               titleSearch: `%${queryKeywordInt}%`,
@@ -59,23 +68,44 @@ const Home: NextPage = () => {
         }
 
         if (queryTypeInt && !queryKeywordInt) {
-          const response = await client.query<MovieResponse>({
-            query: getTitlesByType,
-            variables: {
-              type: queryTypeInt,
-            },
-            fetchPolicy: 'no-cache',
-          })
+          if (!queryGenre) {
+            response = await client.query<MovieResponse>({
+              query: getTitlesByType,
+              variables: {
+                type: queryTypeInt,
+              },
+              fetchPolicy: 'no-cache',
+            })
+          } else {
+            response = await client.query<MovieResponse>({
+              query: getTitlesByTypeAndGenre,
+              variables: {
+                type: queryTypeInt,
+                genre: queryGenre,
+              },
+              fetchPolicy: 'no-cache',
+            })
+          }
           if (response.data && response.data.movie.length > 0) {
             setMovies(response.data.movie)
           }
         }
 
         if (!queryKeywordInt && !queryTypeInt) {
-          const response = await client.query<MovieResponse>({
-            query: getAllTitles,
-            fetchPolicy: 'no-cache',
-          })
+          if (!queryGenre) {
+            response = await client.query<MovieResponse>({
+              query: getAllTitles,
+              fetchPolicy: 'no-cache',
+            })
+          } else {
+            response = await client.query<MovieResponse>({
+              query: getTitlesByGenre,
+              variables: {
+                genre: queryGenre,
+              },
+              fetchPolicy: 'no-cache',
+            })
+          }
           if (response.data && response.data.movie.length > 0) {
             setMovies(response.data.movie)
           }
@@ -92,11 +122,15 @@ const Home: NextPage = () => {
   )
 
   useEffect(() => {
-    executeQuery(keyword as string, type as string)
+    executeQuery(
+      keyword as string,
+      type as string,
+      genre as string[] | undefined
+    )
     // Note: purposely left out executeQuery from dependancy array.
     // We don't want to re-execute when executeQuery changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keyword, type])
+  }, [keyword, type, genre])
 
   const renderSearchResults = () => {
     if (!queryExecuted || loading || loadingError) {

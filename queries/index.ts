@@ -65,3 +65,27 @@ export const getTitlesByType = gql`
     }
   }
 `
+
+export const getTitlesByGenre = gql`
+  query getTitlesByGenre($genre: [String!]) {
+    movie(where: { genre: { _has_keys_any: $genre } }) {
+      imdbID
+      mediaURL
+      title
+      type
+      year
+    }
+  }
+`
+
+export const getTitlesByTypeAndGenre = gql`
+  query getTitlesByTypeAndGenre($type: String!, $genre: [String!]) {
+    movie(where: { type: { _eq: $type }, genre: { _has_keys_any: $genre } }) {
+      imdbID
+      mediaURL
+      title
+      type
+      year
+    }
+  }
+`
