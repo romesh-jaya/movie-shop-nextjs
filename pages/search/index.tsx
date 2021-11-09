@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { ReactElement, useCallback, useEffect, useState } from 'react'
 import Header from '../../components/header'
 import styles from '../../styles/Pages.module.scss'
 import dynamic from 'next/dynamic'
@@ -43,8 +43,6 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [loadingError, setLoadingError] = useState(false)
 
-  console.log('genre', genre)
-
   const executeQuery = useCallback(
     async (
       queryKeywordInt: string,
@@ -62,7 +60,7 @@ const Home: NextPage = () => {
             },
             fetchPolicy: 'no-cache',
           })
-          if (response.data && response.data.movie.length > 0) {
+          if (response.data) {
             setMovies(response.data.movie)
           }
         }
@@ -86,7 +84,7 @@ const Home: NextPage = () => {
               fetchPolicy: 'no-cache',
             })
           }
-          if (response.data && response.data.movie.length > 0) {
+          if (response.data) {
             setMovies(response.data.movie)
           }
         }
@@ -106,7 +104,7 @@ const Home: NextPage = () => {
               fetchPolicy: 'no-cache',
             })
           }
-          if (response.data && response.data.movie.length > 0) {
+          if (response.data) {
             setMovies(response.data.movie)
           }
         }
@@ -133,26 +131,31 @@ const Home: NextPage = () => {
   }, [keyword, type, genre])
 
   const renderSearchResults = () => {
+    let searchResults: ReactElement
+
     if (!queryExecuted || loading || loadingError) {
       return null
     }
 
     if (keyword && movies.length === 0) {
-      return (
+      searchResults = (
         <p className={styles['no-results']}>
           No results found. Try searching for a different keyword
         </p>
       )
-    }
-
-    if (type && movies.length === 0) {
-      return <p className={styles['no-results']}>No results found</p>
+    } else if (type && movies.length === 0) {
+      searchResults = <p className={styles['no-results']}>No results found</p>
+    } else {
+      searchResults = <SearchResults movies={movies} />
     }
 
     return (
       <>
-        <FilterBar titleType={type as string} />
-        <SearchResults movies={movies} />
+        <FilterBar
+          titleType={type as string}
+          titleGenre={genre as string[] | undefined}
+        />
+        {searchResults}
       </>
     )
   }

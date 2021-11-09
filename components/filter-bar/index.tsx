@@ -19,25 +19,38 @@ type QueryObject = {
 
 interface IProps {
   titleType?: string
+  titleGenre?: string[]
 }
 
 const initValueType = (titleType: string): NameValue[] => {
-  if (titleType) {
-    const typeFound = titleTypes.find(type => type.name === titleType)
-    if (typeFound) {
-      return [typeFound]
-    }
+  const typeFound = titleTypes.find(type => type.name === titleType)
+  if (typeFound) {
+    return [typeFound]
   }
   return []
 }
 
+const initValueGenre = (titleGenre: string[]): NameValue[] => {
+  const filteredGenres: NameValue[] = []
+
+  Genres.forEach(genre => {
+    if (titleGenre.includes(genre.name)) {
+      filteredGenres.push(genre)
+    }
+  })
+
+  return filteredGenres
+}
+
 export default function FilterBar(props: IProps) {
   const router = useRouter()
-  const { titleType } = props
+  const { titleType, titleGenre } = props
   const [valueType, setValueType] = useState<NameValue[]>(
     titleType ? initValueType(titleType) : []
   )
-  const [valueGenre, setValueGenre] = useState<NameValue[]>([])
+  const [valueGenre, setValueGenre] = useState<NameValue[]>(
+    titleGenre && titleGenre.length > 0 ? initValueGenre(titleGenre) : []
+  )
 
   const setValueTypeInternal = (arrayValues: NameValue[]) => {
     setValueType(arrayValues)
