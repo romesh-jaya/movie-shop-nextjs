@@ -64,6 +64,8 @@ export default function FilterBar(props: IProps) {
     const query: QueryObject = {}
     if (valueType.length === 1) {
       query.type = valueType[0].name
+    } else if (valueType.length === 0 || valueType.length === 2) {
+      query.type = 'all'
     }
     if (valueGenre.length >= 1) {
       query.genre = valueGenre.map(genre => genre.name)

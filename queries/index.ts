@@ -1,13 +1,19 @@
 import { gql } from '@apollo/client'
 
 export const getAllTitles = gql`
-  query getAllTitles {
-    movie {
+  query getAllTitles($limit: Int, $offset: Int) {
+    movie(limit: $limit, offset: $offset) {
       imdbID
       mediaURL
       title
       type
       year
+    }
+
+    movie_aggregate {
+      aggregate {
+        count
+      }
     }
   }
 `
@@ -43,49 +49,88 @@ export const getTitleDetails = gql`
 `
 
 export const getTitlesByKeyword = gql`
-  query getTitlesByKeyword($titleSearch: String!) {
-    movie(where: { title: { _ilike: $titleSearch } }) {
+  query getTitlesByKeyword($titleSearch: String!, $limit: Int, $offset: Int) {
+    movie(
+      where: { title: { _ilike: $titleSearch } }
+      limit: $limit
+      offset: $offset
+    ) {
       imdbID
       mediaURL
       title
       type
       year
+    }
+    movie_aggregate(where: { title: { _ilike: $titleSearch } }) {
+      aggregate {
+        count
+      }
     }
   }
 `
 
 export const getTitlesByType = gql`
-  query getTitlesByType($type: String!) {
-    movie(where: { type: { _eq: $type } }) {
+  query getTitlesByType($type: String!, $limit: Int, $offset: Int) {
+    movie(where: { type: { _eq: $type } }, limit: $limit, offset: $offset) {
       imdbID
       mediaURL
       title
       type
       year
+    }
+    movie_aggregate(where: { type: { _eq: $type } }) {
+      aggregate {
+        count
+      }
     }
   }
 `
 
 export const getTitlesByGenre = gql`
-  query getTitlesByGenre($genre: [String!]) {
-    movie(where: { genre: { _has_keys_any: $genre } }) {
+  query getTitlesByGenre($genre: [String!], $limit: Int, $offset: Int) {
+    movie(
+      where: { genre: { _has_keys_any: $genre } }
+      limit: $limit
+      offset: $offset
+    ) {
       imdbID
       mediaURL
       title
       type
       year
     }
+    movie_aggregate(where: { genre: { _has_keys_any: $genre } }) {
+      aggregate {
+        count
+      }
+    }
   }
 `
 
 export const getTitlesByTypeAndGenre = gql`
-  query getTitlesByTypeAndGenre($type: String!, $genre: [String!]) {
-    movie(where: { type: { _eq: $type }, genre: { _has_keys_any: $genre } }) {
+  query getTitlesByTypeAndGenre(
+    $type: String!
+    $genre: [String!]
+    $limit: Int
+    $offset: Int
+  ) {
+    movie(
+      where: { type: { _eq: $type }, genre: { _has_keys_any: $genre } }
+      limit: $limit
+      offset: $offset
+    ) {
       imdbID
       mediaURL
       title
       type
       year
+    }
+    movie_aggregate(
+      where: { type: { _eq: $type }, genre: { _has_keys_any: $genre } }
+    ) {
+      aggregate {
+        count
+      }
     }
   }
 `

@@ -18,6 +18,9 @@ import {
 } from '../../queries'
 import SpinnerFixedHeight from '../../components/spinner-fixed-height'
 import FilterBar from '../../components/filter-bar'
+import { Button } from 'antd'
+
+const fetchTitleLimit = 10
 
 // make this dynamic, so that the images are loaded dynamically and not via SSR,
 // which causes problems
@@ -26,7 +29,12 @@ const SearchResults = dynamic(() => import('../../components/search-results'), {
 })
 
 type MovieResponse = {
-  movie: MovieInfoBasic[]
+  movie?: MovieInfoBasic[]
+  movie_aggregate?: {
+    aggregate: {
+      count: number
+    }
+  }
 }
 
 // Note: we couldn't use useLazyQuery due to the behaviour outlined in
@@ -42,14 +50,36 @@ const Home: NextPage = () => {
   const title = keyword || type ? titleBase + ' - ' + resultForText : ''
   const [loading, setLoading] = useState(false)
   const [loadingError, setLoadingError] = useState(false)
+  const [resultCount, setResultCount] = useState(0)
+  const [currentResultOffset, setCurrentResultOffset] = useState(0)
+
+  const onLoadMoreTitlesClicked = () => {
+    const newOffset = currentResultOffset + fetchTitleLimit
+    executeQuery(
+      keyword as string,
+      type as string,
+      genre as string[] | undefined,
+      newOffset
+    )
+    setCurrentResultOffset(newOffset)
+  }
 
   const executeQuery = useCallback(
     async (
       queryKeywordInt: string,
       queryTypeInt: string,
-      queryGenre?: string[]
+      queryGenre?: string[],
+      queryOffset?: number
     ) => {
-      let response: ApolloQueryResult<MovieResponse>
+      let response: ApolloQueryResult<MovieResponse> = {
+        data: {},
+        loading: false,
+        networkStatus: 7,
+      }
+      const offset = queryOffset ?? currentResultOffset
+      if (!queryOffset) {
+        setCurrentResultOffset(0)
+      }
       try {
         setLoading(true)
         if (queryKeywordInt && !queryTypeInt) {
@@ -57,56 +87,65 @@ const Home: NextPage = () => {
             query: getTitlesByKeyword,
             variables: {
               titleSearch: `%${queryKeywordInt}%`,
+              limit: fetchTitleLimit,
+              offset,
             },
             fetchPolicy: 'no-cache',
           })
-          if (response.data) {
-            setMovies(response.data.movie)
-          }
         }
 
         if (queryTypeInt && !queryKeywordInt) {
-          if (!queryGenre) {
-            response = await client.query<MovieResponse>({
-              query: getTitlesByType,
-              variables: {
-                type: queryTypeInt,
-              },
-              fetchPolicy: 'no-cache',
-            })
+          if (queryTypeInt === 'all') {
+            if (!queryGenre) {
+              response = await client.query<MovieResponse>({
+                query: getAllTitles,
+                variables: {
+                  limit: fetchTitleLimit,
+                  offset,
+                },
+                fetchPolicy: 'no-cache',
+              })
+            } else {
+              response = await client.query<MovieResponse>({
+                query: getTitlesByGenre,
+                variables: {
+                  genre: queryGenre,
+                  limit: fetchTitleLimit,
+                  offset,
+                },
+                fetchPolicy: 'no-cache',
+              })
+            }
           } else {
-            response = await client.query<MovieResponse>({
-              query: getTitlesByTypeAndGenre,
-              variables: {
-                type: queryTypeInt,
-                genre: queryGenre,
-              },
-              fetchPolicy: 'no-cache',
-            })
-          }
-          if (response.data) {
-            setMovies(response.data.movie)
+            if (!queryGenre) {
+              response = await client.query<MovieResponse>({
+                query: getTitlesByType,
+                variables: {
+                  type: queryTypeInt,
+                  limit: fetchTitleLimit,
+                  offset,
+                },
+                fetchPolicy: 'no-cache',
+              })
+              console.log('response', response)
+            } else {
+              response = await client.query<MovieResponse>({
+                query: getTitlesByTypeAndGenre,
+                variables: {
+                  type: queryTypeInt,
+                  genre: queryGenre,
+                  limit: fetchTitleLimit,
+                  offset,
+                },
+                fetchPolicy: 'no-cache',
+              })
+            }
           }
         }
 
-        if (!queryKeywordInt && !queryTypeInt) {
-          if (!queryGenre) {
-            response = await client.query<MovieResponse>({
-              query: getAllTitles,
-              fetchPolicy: 'no-cache',
-            })
-          } else {
-            response = await client.query<MovieResponse>({
-              query: getTitlesByGenre,
-              variables: {
-                genre: queryGenre,
-              },
-              fetchPolicy: 'no-cache',
-            })
-          }
-          if (response.data) {
-            setMovies(response.data.movie)
-          }
+        if (response.data.movie && response.data.movie_aggregate) {
+          setMovies(response.data.movie)
+          setResultCount(response.data.movie_aggregate.aggregate.count)
         }
       } catch {
         setLoadingError(true)
@@ -116,7 +155,7 @@ const Home: NextPage = () => {
 
       setQueryExecuted(true)
     },
-    [client]
+    [client, currentResultOffset]
   )
 
   useEffect(() => {
@@ -156,6 +195,13 @@ const Home: NextPage = () => {
           titleGenre={genre as string[] | undefined}
         />
         {searchResults}
+        {resultCount > currentResultOffset + fetchTitleLimit && (
+          <Button
+            className={styles['load-more-button']}
+            onClick={onLoadMoreTitlesClicked}>
+            Load more titles
+          </Button>
+        )}
       </>
     )
   }

@@ -59,3 +59,15 @@
   width: 100%;
   margin-bottom: 20px;
 }
+
+.load-more-button {
+  margin-top: 1.6rem;
+  border: 1px solid lightgreen;
+  background: limegreen;
+  color: white;
+  border-radius: 3px;
+
+  &:hover {
+    color: limegreen;
+  }
+}
