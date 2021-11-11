@@ -11,6 +11,7 @@ import { cssValue } from '../../utils/css'
 import { useContainerDimensions } from '../../hooks/useContainerDimensions'
 import { MovieInfoAdvanced } from '../../types/MovieInfoAdvanced'
 import MoviePreview from '../movie-preview'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 
 const thumbnailGap = 20
 
@@ -63,11 +64,11 @@ export default function MovieSection(props: IProps) {
         <Slider>{renderSlides()}</Slider>
         <ButtonBack
           className={`${styles['btn-arrow']} ${styles['back-button']}`}>
-          <></>
+          <LeftOutlined />
         </ButtonBack>
         <ButtonNext
           className={`${styles['btn-arrow']} ${styles['next-button']}`}>
-          <></>
+          <RightOutlined />
         </ButtonNext>
       </CarouselProvider>
     </div>
