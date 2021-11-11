@@ -27,3 +27,12 @@
 .checkbox {
   color: $primary-text-color;
 }
+
+.close-button {
+  border-radius: 3px;
+
+  &:hover {
+    background-color: limegreen;
+    color: $primary-text-color;
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styles from './Filter.module.scss'
-import { Popover, Checkbox } from 'antd'
+import { Popover, Checkbox, Button } from 'antd'
 import { NameValue } from '../../types/NameValue'
 import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 
@@ -54,6 +54,11 @@ export default function Filter(props: IProps) {
           </div>
         )
       })}
+      <Button
+        className={styles['close-button']}
+        onClick={() => setPopoverOpen(false)}>
+        Close
+      </Button>
     </div>
   )
 
