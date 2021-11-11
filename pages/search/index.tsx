@@ -49,6 +49,7 @@ const Home: NextPage = () => {
   const resultForText = keyword ? 'Result for: ' + keyword : `Filter titles`
   const title = keyword || type ? titleBase + ' - ' + resultForText : ''
   const [loading, setLoading] = useState(false)
+  const [loadingButton, setLoadingButton] = useState(false)
   const [loadingError, setLoadingError] = useState(false)
   const [resultCount, setResultCount] = useState(0)
   const [currentResultOffset, setCurrentResultOffset] = useState(0)
@@ -60,7 +61,7 @@ const Home: NextPage = () => {
       type as string,
       genre as string[] | undefined,
       newOffset,
-      false
+      false // Don't call setLoading(true) in this scenario
     )
     setCurrentResultOffset(newOffset)
   }
@@ -71,19 +72,20 @@ const Home: NextPage = () => {
       queryTypeInt: string,
       queryGenre?: string[],
       queryOffset?: number,
-      setLoadingFlag: boolean = true
+      setLoadingInComponent: boolean = true
     ) => {
       let response: ApolloQueryResult<MovieResponse> = {
         data: {},
         loading: false,
         networkStatus: 7,
       }
-      const offset = queryOffset ?? currentResultOffset
+      const offset = queryOffset ?? 0
       if (!queryOffset) {
         setCurrentResultOffset(0)
       }
       try {
-        setLoadingFlag && setLoading(true)
+        setLoadingInComponent && setLoading(true)
+        !setLoadingInComponent && setLoadingButton(true)
         if (queryKeywordInt && !queryTypeInt) {
           response = await client.query<MovieResponse>({
             query: getTitlesByKeyword,
@@ -92,7 +94,6 @@ const Home: NextPage = () => {
               limit: fetchTitleLimit,
               offset,
             },
-            fetchPolicy: 'no-cache',
           })
         }
 
@@ -105,7 +106,6 @@ const Home: NextPage = () => {
                   limit: fetchTitleLimit,
                   offset,
                 },
-                fetchPolicy: 'no-cache',
               })
             } else {
               response = await client.query<MovieResponse>({
@@ -115,7 +115,6 @@ const Home: NextPage = () => {
                   limit: fetchTitleLimit,
                   offset,
                 },
-                fetchPolicy: 'no-cache',
               })
             }
           } else {
@@ -127,7 +126,6 @@ const Home: NextPage = () => {
                   limit: fetchTitleLimit,
                   offset,
                 },
-                fetchPolicy: 'no-cache',
               })
             } else {
               response = await client.query<MovieResponse>({
@@ -138,7 +136,6 @@ const Home: NextPage = () => {
                   limit: fetchTitleLimit,
                   offset,
                 },
-                fetchPolicy: 'no-cache',
               })
             }
           }
@@ -146,26 +143,29 @@ const Home: NextPage = () => {
 
         if (response.data.movie && response.data.movie_aggregate) {
           if (queryOffset) {
+            // Add the newly fetched movies to the current set
             setMovies(movies => {
+              const newArray = movies.slice()
               if (response.data.movie) {
-                movies.push(...response.data.movie)
+                newArray.push(...response.data.movie)
               }
-              return movies
+              return newArray
             })
           } else {
             setMovies(response.data.movie)
           }
           setResultCount(response.data.movie_aggregate.aggregate.count)
+          setQueryExecuted(true)
         }
       } catch {
         setLoadingError(true)
+        setQueryExecuted(true)
       } finally {
-        setLoadingFlag && setLoading(false)
+        setLoading(false)
+        setLoadingButton(false)
       }
-
-      setQueryExecuted(true)
     },
-    [client, currentResultOffset]
+    [client]
   )
 
   useEffect(() => {
@@ -208,6 +208,7 @@ const Home: NextPage = () => {
         {resultCount > currentResultOffset + fetchTitleLimit && (
           <Button
             className={styles['load-more-button']}
+            loading={loadingButton}
             onClick={onLoadMoreTitlesClicked}>
             Load more titles
           </Button>
