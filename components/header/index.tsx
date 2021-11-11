@@ -15,8 +15,13 @@ const menuLinks = [
   { key: 'TV Series', link: `/search?type=${MovieType.TvSeries}` },
 ]
 
-export default function Header() {
+interface IProps {
+  setQueryInput: (query: string) => void
+}
+
+export default function Header(props: IProps) {
   const router = useRouter()
+  const { setQueryInput } = props
   const [showDrawer, setShowDrawer] = useState(false)
 
   const getPathnameWithSearch = () => {
@@ -97,7 +102,7 @@ export default function Header() {
         </Link>
         <div className={styles['links-container']}>{renderLinksDesktop()}</div>
         <span className={styles.query}>
-          <Query />
+          <Query setQueryInput={setQueryInput} />
         </span>
         <Button
           className={styles['drawer-button']}

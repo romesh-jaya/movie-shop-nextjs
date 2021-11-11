@@ -20,6 +20,7 @@ type QueryObject = {
 interface IProps {
   titleType?: string
   titleGenre?: string[]
+  setQueryInput: (query: string) => void
 }
 
 const initValueType = (titleType: string): NameValue[] => {
@@ -44,7 +45,7 @@ const initValueGenre = (titleGenre: string[]): NameValue[] => {
 
 export default function FilterBar(props: IProps) {
   const router = useRouter()
-  const { titleType, titleGenre } = props
+  const { titleType, titleGenre, setQueryInput } = props
   const [valueType, setValueType] = useState<NameValue[]>(
     titleType ? initValueType(titleType) : []
   )
@@ -62,6 +63,7 @@ export default function FilterBar(props: IProps) {
 
   const onApplyFilterClicked = () => {
     const query: QueryObject = {}
+    setQueryInput('')
     if (valueType.length === 1) {
       query.type = valueType[0].name
     } else if (valueType.length === 0 || valueType.length === 2) {

@@ -2,7 +2,7 @@
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/header'
 import HeroCarousel from '../components/hero-carousel'
 import Query from '../components/query'
@@ -11,6 +11,7 @@ import styles from '../styles/Pages.module.scss'
 import { useQuery } from '@apollo/client'
 import { getFeaturedTitles } from '../queries'
 import SpinnerFixedHeight from '../components/spinner-fixed-height'
+import QueryContext from '../context/query-context'
 
 // make this dynamic, so that the images are loaded dynamically and not via SSR,
 // which causes problems
@@ -20,6 +21,7 @@ const MovieSection = dynamic(() => import('../components/movie-section'), {
 
 const Home: NextPage = () => {
   const { loading, error, data } = useQuery(getFeaturedTitles)
+  const [queryInput, setQueryInput] = useState('')
 
   return (
     <div className={styles.container}>
@@ -31,18 +33,20 @@ const Home: NextPage = () => {
           rel='stylesheet'
         />
       </Head>
-      <Header />
-      <div className={`${styles.content} ${styles['column-direction']}`}>
-        <div className={styles['query-mobile']}>
-          <Query />
+      <QueryContext.Provider value={queryInput}>
+        <Header setQueryInput={setQueryInput} />
+        <div className={`${styles.content} ${styles['column-direction']}`}>
+          <div className={styles['query-mobile']}>
+            <Query setQueryInput={setQueryInput} />
+          </div>
+          <HeroCarousel />
+          {loading && <SpinnerFixedHeight />}
+          {error && <p>Error occured while loading movies</p>}
+          {!loading && !error && data.movie.length > 0 && (
+            <MovieSection sectionTitle='Featured' movies={data.movie} />
+          )}
         </div>
-        <HeroCarousel />
-        {loading && <SpinnerFixedHeight />}
-        {error && <p>Error occured while loading movies</p>}
-        {!loading && !error && data.movie.length > 0 && (
-          <MovieSection sectionTitle='Featured' movies={data.movie} />
-        )}
-      </div>
+      </QueryContext.Provider>
     </div>
   )
 }

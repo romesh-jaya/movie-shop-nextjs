@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import { SearchOutlined } from '@ant-design/icons'
 import styles from './Query.module.scss'
 import { useRouter } from 'next/router'
+import QueryContext from '../../context/query-context'
 
-export default function Query() {
+interface IProps {
+  setQueryInput: (query: string) => void
+}
+
+export default function Query(props: IProps) {
+  const queryInput = useContext(QueryContext)
+  const { setQueryInput } = props
   const router = useRouter()
-  const [queryInput, setQueryInput] = useState('')
 
   const onQueryInputChange = (e?: React.ChangeEvent<HTMLInputElement>) => {
     setQueryInput(e?.target.value || '')
