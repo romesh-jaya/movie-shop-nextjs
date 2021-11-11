@@ -59,7 +59,8 @@ const Home: NextPage = () => {
       keyword as string,
       type as string,
       genre as string[] | undefined,
-      newOffset
+      newOffset,
+      false
     )
     setCurrentResultOffset(newOffset)
   }
@@ -69,7 +70,8 @@ const Home: NextPage = () => {
       queryKeywordInt: string,
       queryTypeInt: string,
       queryGenre?: string[],
-      queryOffset?: number
+      queryOffset?: number,
+      setLoadingFlag: boolean = true
     ) => {
       let response: ApolloQueryResult<MovieResponse> = {
         data: {},
@@ -81,7 +83,7 @@ const Home: NextPage = () => {
         setCurrentResultOffset(0)
       }
       try {
-        setLoading(true)
+        setLoadingFlag && setLoading(true)
         if (queryKeywordInt && !queryTypeInt) {
           response = await client.query<MovieResponse>({
             query: getTitlesByKeyword,
@@ -127,7 +129,6 @@ const Home: NextPage = () => {
                 },
                 fetchPolicy: 'no-cache',
               })
-              console.log('response', response)
             } else {
               response = await client.query<MovieResponse>({
                 query: getTitlesByTypeAndGenre,
@@ -144,13 +145,22 @@ const Home: NextPage = () => {
         }
 
         if (response.data.movie && response.data.movie_aggregate) {
-          setMovies(response.data.movie)
+          if (queryOffset) {
+            setMovies(movies => {
+              if (response.data.movie) {
+                movies.push(...response.data.movie)
+              }
+              return movies
+            })
+          } else {
+            setMovies(response.data.movie)
+          }
           setResultCount(response.data.movie_aggregate.aggregate.count)
         }
       } catch {
         setLoadingError(true)
       } finally {
-        setLoading(false)
+        setLoadingFlag && setLoading(false)
       }
 
       setQueryExecuted(true)
