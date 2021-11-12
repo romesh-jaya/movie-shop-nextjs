@@ -109,7 +109,8 @@
     div {
       background-color: $background-start;
 
-      div {
+      div,
+      button {
         color: $primary-text-color;
       }
     }
