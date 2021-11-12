@@ -11,25 +11,3 @@
     justify-content: center;
   }
 }
-
-.apply-filters-button {
-  border: 1px solid lightgreen;
-  background: limegreen;
-  color: white;
-  border-radius: 3px;
-
-  &:hover {
-    color: limegreen;
-  }
-}
-
-.clear-filters-button {
-  border: 1px solid lightsalmon;
-  background: red;
-  color: white;
-  border-radius: 3px;
-
-  &:hover {
-    color: red;
-  }
-}

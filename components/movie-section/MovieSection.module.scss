@@ -47,13 +47,17 @@
     height: 32px;
   }
 
-  &:hover {
-    background: $primary-text-color;
-    color: $background;
+  @media (hover: hover) {
+    &:hover {
+      background: $primary-text-color;
+      color: $background;
+    }
+  }
 
-    @media #{$sm} {
-      color: $primary-text-color;
+  @media (hover: none) {
+    &:active {
       background: $background;
+      color: $primary-text-color;
     }
   }
 

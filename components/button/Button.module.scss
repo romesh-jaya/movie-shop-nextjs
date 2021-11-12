@@ -1,0 +1,45 @@
+.button {
+  border-radius: 3px;
+  padding: 4px 15px;
+  display: flex;
+}
+
+.green-button {
+  border: 1px solid lightgreen;
+  background: limegreen;
+  color: white;
+
+  @media (hover: hover) {
+    &:hover {
+      color: limegreen;
+      background: white;
+    }
+  }
+
+  @media (hover: none) {
+    &:active {
+      color: white;
+      background: limegreen;
+    }
+  }
+}
+
+.clear-green-button {
+  border: 1px solid lightgreen;
+  background: white;
+  color: limegreen;
+
+  @media (hover: hover) {
+    &:hover {
+      color: white;
+      background: limegreen;
+    }
+  }
+
+  @media (hover: none) {
+    &:active {
+      background: white;
+      color: limegreen;
+    }
+  }
+}

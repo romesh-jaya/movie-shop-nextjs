@@ -18,8 +18,9 @@ import {
 } from '../../queries'
 import SpinnerFixedHeight from '../../components/spinner-fixed-height'
 import FilterBar from '../../components/filter-bar'
-import { Button } from 'antd'
 import QueryContext from '../../context/query-context'
+import Button from '../../components/button'
+import SpinnerInline from '../../components/spinner-inline'
 
 const fetchTitleLimit = 10
 
@@ -209,12 +210,15 @@ const Home: NextPage = () => {
         />
         {searchResults}
         {resultCount > currentResultOffset + fetchTitleLimit && (
-          <Button
-            className={styles['load-more-button']}
-            loading={loadingButton}
-            onClick={onLoadMoreTitlesClicked}>
-            Load more titles
-          </Button>
+          <div className={styles['button-container']}>
+            <Button
+              className='green-button'
+              onClick={onLoadMoreTitlesClicked}
+              disabled={loadingButton}>
+              {loadingButton && <SpinnerInline />}
+              Load more titles
+            </Button>
+          </div>
         )}
       </>
     )

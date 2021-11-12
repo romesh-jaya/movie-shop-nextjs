@@ -1,4 +1,3 @@
-import { Button } from 'antd'
 import React, { useState } from 'react'
 import { MovieType } from '../../enums/MovieType'
 import { NameValue } from '../../types/NameValue'
@@ -6,6 +5,7 @@ import Filter from '../filter'
 import styles from './FilterBar.module.scss'
 import { useRouter } from 'next/router'
 import { Genres } from '../../constants/genres'
+import Button from '../button'
 
 const titleTypes: NameValue[] = [
   { name: MovieType.Movie, value: 'Movie' },
@@ -99,14 +99,10 @@ export default function FilterBar(props: IProps) {
         setValue={setValueGenreInternal}
         noOfGridColumns={3}
       />
-      <Button
-        className={styles['clear-filters-button']}
-        onClick={onClearFilterClicked}>
+      <Button className='clear-green-button' onClick={onClearFilterClicked}>
         Clear Filters
       </Button>
-      <Button
-        className={styles['apply-filters-button']}
-        onClick={onApplyFilterClicked}>
+      <Button className='green-button' onClick={onApplyFilterClicked}>
         Apply Filters
       </Button>
     </div>
