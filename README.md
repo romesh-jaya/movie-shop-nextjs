@@ -1,5 +1,17 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+The website is meant to be used by a company renting DVD's. The website displays the available titles (movies/TV series). The user can search for titles by name, or browse the featured titles. The website is responsive for mobile and tablet devices.
+
+Tech Stack used:
+
+- Integration with GraphQL via a lambda function on netlify
+- Ant Design
+- React Context
+- Side-drawer
+- SCSS modules
+- Carousel component using pure-react-carousel
+- Husky pre-commit hooks
+
 ## Getting Started
 
 First, run the development server:
