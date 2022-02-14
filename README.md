@@ -43,6 +43,7 @@ Filtering movies
 ## Tech Stack
 
 - NextJS
+- Typescript
 - Integration with GraphQL via a lambda function on netlify
 - Ant Design
 - React Context
