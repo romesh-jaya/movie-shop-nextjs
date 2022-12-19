@@ -65,16 +65,16 @@ export default function MovieDetail(props: IProps) {
                 <td>{movie.pGRating}</td>
               </tr>
             )}
-            {movie.genre.length && (
+            {movie.genre && (
               <tr>
                 <td>Genres</td>
-                <td>{movie.genre.join(', ')}</td>
+                <td>{JSON.parse(movie.genre).join(', ')}</td>
               </tr>
             )}
             {movie.languages && (
               <tr>
                 <td>Languages</td>
-                <td>{movie.languages}</td>
+                <td>{JSON.parse(movie.languages).join(', ')}</td>
               </tr>
             )}
           </tbody>
