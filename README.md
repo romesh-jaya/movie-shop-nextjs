@@ -2,9 +2,6 @@
 
 The website is meant to be used by a company renting DVD's. The website displays the available titles (movies/TV series). The user can search for titles by name, or browse the featured titles. The website is responsive for mobile and tablet devices.
 
-Site is hosted here:
-https://movie-shop-new.netlify.app
-
 User guide can be found here:
 https://github.com/romesh-jaya/movie-shop-nextjs/blob/main/Quick%20Start%20Guide.pdf?raw=true
 
